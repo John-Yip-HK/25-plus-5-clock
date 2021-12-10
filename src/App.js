@@ -1,34 +1,47 @@
 import { Container, Row, Col, Button } from "react-bootstrap";
 import "bootstrap/dist/css/bootstrap.min.css";
-import './App.scss';
+import "./App.scss";
 
 function App() {
   return (
-    <Container>
+    <Container className="d-flex align-items-center flex-column">
       <Row>
-        <Col><h3>25 + 5 Clock</h3></Col>
+        <Col>
+          <h2 id="heading">25 + 5 Clock</h2>
+        </Col>
       </Row>
       <Row>
-        <Container>
+        <Container id="timer">
           <Row>
-            <Col>Session</Col>
+            <Col id="timer-label">Session</Col>
           </Row>
           <Row>
-            <Col><h2>25:00</h2></Col>
+            <Col>
+              <h1 id="time-left">25:00</h1>
+            </Col>
           </Row>
           <Row>
-            <Col>Break: 5:00</Col>
+            <Col id="break-time">
+              Break: <span id="break-time-span">5:00</span>
+            </Col>
           </Row>
         </Container>
       </Row>
       <Row>
-        <Button>Start</Button>
-      </Row>
-      <Row>
-        <Button>Settings</Button>
-      </Row>
-      <Row>
-        <Button>Reset Timer</Button>
+        <Container
+          id="button-container"
+          className="d-flex align-items-center flex-column"
+        >
+          <Row>
+            <Button id="start_stop">Start</Button>
+          </Row>
+          <Row>
+            <Button>Settings</Button>
+          </Row>
+          <Row>
+            <Button id="reset">Reset Timer</Button>
+          </Row>
+        </Container>
       </Row>
     </Container>
   );
