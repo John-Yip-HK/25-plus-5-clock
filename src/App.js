@@ -1,47 +1,27 @@
-import { Container, Row, Col, Button } from "react-bootstrap";
+import React, { useState } from "react";
+import { Container, Row } from "react-bootstrap";
+import Timer from "./components/TimerComponent";
+import Buttons from "./components/ButtonComponent";
+import Header from "./components/HeaderComponent";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "./App.scss";
 
 function App() {
+  const [show, setShow] = useState(false);
+
+  const handleClose = () => setShow(false);
+  const handleShow = () => setShow(true);
+
   return (
     <Container className="d-flex align-items-center flex-column">
       <Row>
-        <Col>
-          <h2 id="heading">25 + 5 Clock</h2>
-        </Col>
+        <Header show={show} handleClose={handleClose} />
       </Row>
       <Row>
-        <Container id="timer">
-          <Row>
-            <Col id="timer-label">Session</Col>
-          </Row>
-          <Row>
-            <Col>
-              <h1 id="time-left">25:00</h1>
-            </Col>
-          </Row>
-          <Row>
-            <Col id="break-time">
-              Break: <span id="break-time-span">5:00</span>
-            </Col>
-          </Row>
-        </Container>
+        <Timer />
       </Row>
       <Row>
-        <Container
-          id="button-container"
-          className="d-flex align-items-center flex-column"
-        >
-          <Row>
-            <Button id="start_stop">Start</Button>
-          </Row>
-          <Row>
-            <Button>Settings</Button>
-          </Row>
-          <Row>
-            <Button id="reset">Reset Timer</Button>
-          </Row>
-        </Container>
+        <Buttons handleShow={handleShow} />
       </Row>
     </Container>
   );
