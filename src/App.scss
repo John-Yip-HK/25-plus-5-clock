@@ -9,7 +9,8 @@
   margin-bottom: 1rem;
 }
 
-#timer {
+#timer,
+.time-window {
   padding: 0.5rem 1rem;
 
   border: 1px solid black;
@@ -17,9 +18,23 @@
 
   text-align: center;
 
-  #time-left {
+  #time-left,
+  .time-window-value {
     font-size: 4rem;
     font-weight: bold;
+  }
+}
+
+.time-window {
+  width: 75%;
+  margin: 0.5rem auto;
+}
+
+div[class*="-wrapper"] {
+  text-align: center;
+
+  h1 {
+    margin: 0;
   }
 }
 
