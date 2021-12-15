@@ -24,15 +24,22 @@ function TimeWindow({ details }) {
           </div>
         </Col>
       </Row>
-      <Row>
+      <Row className="adjust-button">
         <Col>
-          <Button id={`${details["id-prefix"]}-increment`}>up</Button>
+          <Button
+            id={`${details["id-prefix"]}-increment`}
+            onClick={() => details.timeUp(details.type)}
+          >
+            up
+          </Button>
         </Col>
         <Col>
-          <Button>default</Button>
-        </Col>
-        <Col>
-          <Button id={`${details["id-prefix"]}-decrement`}>down</Button>
+          <Button
+            id={`${details["id-prefix"]}-decrement`}
+            onClick={() => details.timeDown(details.type)}
+          >
+            down
+          </Button>
         </Col>
       </Row>
     </Container>
@@ -60,14 +67,21 @@ export default function Header(props) {
               details={{
                 title: "Session Length",
                 "id-prefix": "session",
-                time: 25,
+                time: props.session,
+                type: "S",
+                timeUp: props.increaseTime,
+                timeDown: props.decreaseTime,
               }}
+              timeUp={props.increaseTime}
             />
             <TimeWindow
               details={{
                 title: "Break Length",
                 "id-prefix": "break",
-                time: 5,
+                time: props.breakTime,
+                type: "B",
+                timeUp: props.increaseTime,
+                timeDown: props.decreaseTime,
               }}
             />
           </Modal.Body>

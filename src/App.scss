@@ -38,6 +38,19 @@ div[class*="-wrapper"] {
   }
 }
 
+.adjust-button {
+  display: flex;
+  justify-content: center;
+
+  .btn {
+    width: 5rem;
+  }
+}
+
+.modal-footer {
+  justify-content: space-around;
+}
+
 #button-container {
   margin-top: 1rem;
 
