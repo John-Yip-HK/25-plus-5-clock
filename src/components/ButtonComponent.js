@@ -15,7 +15,9 @@ export default function ButtonComponent(props) {
         <Button onClick={props.handleShow}>Settings</Button>
       </Row>
       <Row>
-        <Button id="reset">Reset Timer</Button>
+        <Button id="reset" onClick={props.resetTime}>
+          Reset Timer
+        </Button>
       </Row>
     </Container>
   );

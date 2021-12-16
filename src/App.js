@@ -17,34 +17,9 @@ function App() {
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
 
-  const increaseTime = (type) => {
-    switch (type) {
-      case "S":
-        if (session < 60) setSession(session + 1);
-        break;
-      case "B":
-        if (breakTime < 60) setBreakTime(breakTime + 1);
-        break;
-      default:
-        break;
-    }
-  };
-  const decreaseTime = (type) => {
-    switch (type) {
-      case "S":
-        if (session > 1) setSession(session - 1);
-        break;
-      case "B":
-        if (breakTime > 1) setBreakTime(breakTime - 1);
-        break;
-      default:
-        break;
-    }
-  };
-
-  const resetTime = () => {
-    setSession(defaultSession);
-    setBreakTime(defaultBreak);
+  const setTime = (session = defaultSession, breakTime = defaultBreak) => {
+    setSession(session);
+    setBreakTime(breakTime);
   };
 
   return (
@@ -53,8 +28,7 @@ function App() {
         <Header
           show={show}
           handleClose={handleClose}
-          increaseTime={increaseTime}
-          decreaseTime={decreaseTime}
+          setTime={setTime}
           session={session}
           breakTime={breakTime}
         />
@@ -63,7 +37,7 @@ function App() {
         <Timer session={session} breakTime={breakTime} />
       </Row>
       <Row>
-        <Buttons handleShow={handleShow} resetTime={resetTime} />
+        <Buttons handleShow={handleShow} resetTime={setTime} />
       </Row>
     </Container>
   );
