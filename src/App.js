@@ -13,6 +13,7 @@ function App() {
   const [show, setShow] = useState(false);
   const [session, setSession] = useState(defaultSession);
   const [breakTime, setBreakTime] = useState(defaultBreak);
+  const [countDown, setCountDown] = useState([null, null]);
 
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
@@ -20,6 +21,23 @@ function App() {
   const setTime = (session = defaultSession, breakTime = defaultBreak) => {
     setSession(session);
     setBreakTime(breakTime);
+  };
+
+  const handleTimer = () => {
+    const element = document.getElementById("start_stop");
+
+    const runTimer = () => {
+      if (countDown[0] === null) {
+        setCountDown([session, breakTime]);
+      }
+    };
+
+    const pauseTimer = () => {};
+
+    if (element.innerHTML === "Start") runTimer();
+    else pauseTimer();
+
+    element.innerHTML = element.innerHTML === "Start" ? "Pause" : "Start";
   };
 
   return (
@@ -37,7 +55,11 @@ function App() {
         <Timer session={session} breakTime={breakTime} />
       </Row>
       <Row>
-        <Buttons handleShow={handleShow} resetTime={setTime} />
+        <Buttons
+          handleShow={handleShow}
+          resetTime={setTime}
+          handleTimer={handleTimer}
+        />
       </Row>
     </Container>
   );

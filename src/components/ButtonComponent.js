@@ -9,13 +9,15 @@ export default function ButtonComponent(props) {
       className="d-flex align-items-center flex-column"
     >
       <Row>
-        <Button id="start_stop">Start</Button>
+        <Button id="start_stop" onClick={props.handleTimer}>
+          Start
+        </Button>
       </Row>
       <Row>
         <Button onClick={props.handleShow}>Settings</Button>
       </Row>
       <Row>
-        <Button id="reset" onClick={props.resetTime}>
+        <Button id="reset" onClick={() => props.resetTime()}>
           Reset Timer
         </Button>
       </Row>

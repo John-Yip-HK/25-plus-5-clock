@@ -45,18 +45,18 @@ export default function Header(props) {
         <Row className="adjust-button">
           <Col>
             <Button
-              id={`${details["id-prefix"]}-increment`}
-              onClick={increaseTime}
-            >
-              up
-            </Button>
-          </Col>
-          <Col>
-            <Button
               id={`${details["id-prefix"]}-decrement`}
               onClick={decreaseTime}
             >
               down
+            </Button>
+          </Col>
+          <Col>
+            <Button
+              id={`${details["id-prefix"]}-increment`}
+              onClick={increaseTime}
+            >
+              up
             </Button>
           </Col>
         </Row>
