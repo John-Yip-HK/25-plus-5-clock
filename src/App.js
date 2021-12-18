@@ -25,12 +25,18 @@ function App() {
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
 
-  const setTime = (session = defaultSession, breakTime = defaultBreak) => {
-    setSession(session);
-    setBreakTime(breakTime);
+  const setTime = (
+    newSession = defaultSession,
+    newBreakTime = defaultBreak
+  ) => {
+    setSession(newSession);
+    setBreakTime(newBreakTime);
 
-    let minutesDisplay = (session < 10 ? "0" : "") + session;
-    document.getElementById("time-left").innerHTML = `${minutesDisplay}:00`;
+    let timeDisplay = (newSession < 10 ? "0" : "") + newSession;
+    document.getElementById("time-left").innerHTML = `${timeDisplay}:00`;
+
+    timeDisplay = newBreakTime;
+    document.getElementById("break-time-span").innerHTML = `${timeDisplay}:00`;
   };
 
   const resetTime = () => {
@@ -58,35 +64,38 @@ function App() {
         "time-left"
       ).innerHTML = `${minutesDisplay}:${secondsDisplay}`;
 
+      let timeoutFunction;
+
       if (timePair[1] === 0) {
         if (timePair[0] === 0) {
-          setTimerMode(timerMode === "S" ? "B" : "S");
+          const newTimerMode = timerMode === "S" ? "B" : "S";
+          setTimerMode(newTimerMode);
 
-          setTimer(
-            setTimeout(() => {
-              countDown[0] = timerMode === "S" ? session : breakTime;
-              countDown[1] = 0;
-              // Make the alarm ring.
-              runCountDown(countDown);
-            }, 1000)
-          );
+          timeoutFunction = () => {
+            countDown[0] = newTimerMode === "S" ? session : breakTime;
+            countDown[1] = 0;
+            document.getElementById("timer-label").innerHTML =
+              document.getElementById("timer-label").innerHTML === "Session"
+                ? "Break"
+                : "Session";
+            // Make the alarm ring.
+          };
         } else {
-          setTimer(
-            setTimeout(() => {
-              countDown[0] = countDown[0] - 1;
-              countDown[1] = 59;
-              runCountDown(countDown);
-            }, 1000)
-          );
+          timeoutFunction = () => {
+            countDown[0] = countDown[0] - 1;
+            countDown[1] = 59;
+          };
         }
       } else {
-        setTimer(
-          setTimeout(() => {
-            countDown[1] -= 1;
-            runCountDown(countDown);
-          }, 1000)
-        );
+        timeoutFunction = () => (countDown[1] -= 1);
       }
+
+      setTimer(
+        setTimeout(() => {
+          timeoutFunction();
+          runCountDown(countDown);
+        }, 1000)
+      );
     };
 
     runCountDown(countDown);
