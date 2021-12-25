@@ -39,7 +39,7 @@ function App() {
     document.getElementById("break-time-span").innerHTML = `${timeDisplay}:00`;
   };
 
-  const resetTime = (captionElement) => {
+  const resetTime = () => {
     clearTimeout(timer);
     setTimer(null);
     setTimerMode(defaultTimerMode);
@@ -48,10 +48,9 @@ function App() {
     setCountDown(defaultCountDown);
 
     document.getElementById("time-left").innerHTML = `${session}:00`;
-    captionElement.innerHTML = "Start";
   };
 
-  const runTimer = (element) => {
+  const runTimer = () => {
     if (countDown.filter((time) => time !== null).length === 0) {
       countDown[0] = session;
       countDown[1] = 0;
@@ -99,15 +98,11 @@ function App() {
     };
 
     runCountDown(countDown);
-
-    element.innerHTML = "Pause";
   };
 
-  const pauseTimer = (element) => {
+  const pauseTimer = () => {
     clearTimeout(timer);
     setTimer(null);
-
-    element.innerHTML = "Start";
   };
 
   return (

@@ -1,3 +1,5 @@
+import React, { useState } from "react";
+
 import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
 import Button from "react-bootstrap/Button";
@@ -6,20 +8,35 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faSlidersH,
   faPlay,
+  faPause,
   faRedoAlt,
 } from "@fortawesome/free-solid-svg-icons";
 
 export default function ButtonComponent(props) {
+  const [startStopIcon, setStartStopIcon] = useState(faPlay);
+
   const handleTimer = (event) => {
     const elementWithCaption = event.target.children[1];
 
-    if (elementWithCaption.innerHTML === "Start")
-      props.runTimer(elementWithCaption);
-    else props.pauseTimer(elementWithCaption);
+    if (elementWithCaption.innerHTML === "Start") {
+      props.runTimer();
+      elementWithCaption.innerHTML = "Pause";
+      setStartStopIcon(faPause);
+    } else {
+      props.pauseTimer();
+      elementWithCaption.innerHTML = "Start";
+      setStartStopIcon(faPlay);
+    }
   };
 
-  const handleReset = () => {
+  const handleReset = (event) => {
+    const elementWithCaption =
+      event.target.parentElement.parentElement.children[0].children[0]
+        .children[1];
+
     props.resetTime(document.getElementById("start_stop_caption"));
+    setStartStopIcon(faPlay);
+    elementWithCaption.innerHTML = "Start";
   };
 
   return (
@@ -29,7 +46,7 @@ export default function ButtonComponent(props) {
     >
       <Row>
         <Button id="start_stop" onClick={handleTimer}>
-          <FontAwesomeIcon icon={faPlay} />{" "}
+          <FontAwesomeIcon icon={startStopIcon} />{" "}
           <span id="start_stop_caption">Start</span>
         </Button>
       </Row>
