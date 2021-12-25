@@ -39,7 +39,7 @@ function App() {
     document.getElementById("break-time-span").innerHTML = `${timeDisplay}:00`;
   };
 
-  const resetTime = () => {
+  const resetTime = (captionElement) => {
     clearTimeout(timer);
     setTimer(null);
     setTimerMode(defaultTimerMode);
@@ -48,7 +48,7 @@ function App() {
     setCountDown(defaultCountDown);
 
     document.getElementById("time-left").innerHTML = `${session}:00`;
-    document.getElementById("start_stop").innerHTML = "Start";
+    captionElement.innerHTML = "Start";
   };
 
   const runTimer = (element) => {

@@ -4,7 +4,16 @@ import Container from "react-bootstrap/Container";
 import Col from "react-bootstrap/Col";
 import Row from "react-bootstrap/Row";
 
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import {
+  faArrowAltCircleUp,
+  faArrowAltCircleDown,
+} from "@fortawesome/free-solid-svg-icons";
+
 export default function Header(props) {
+  const arrowUp = <FontAwesomeIcon icon={faArrowAltCircleUp} size="2x" />;
+  const arrowDown = <FontAwesomeIcon icon={faArrowAltCircleDown} size="2x" />;
+
   const TimeWindow = (details) => {
     let tempTime = details.time;
 
@@ -48,7 +57,7 @@ export default function Header(props) {
               id={`${details["id-prefix"]}-decrement`}
               onClick={decreaseTime}
             >
-              down
+              {arrowDown}
             </Button>
           </Col>
           <Col>
@@ -56,7 +65,7 @@ export default function Header(props) {
               id={`${details["id-prefix"]}-increment`}
               onClick={increaseTime}
             >
-              up
+              {arrowUp}
             </Button>
           </Col>
         </Row>

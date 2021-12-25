@@ -20,8 +20,15 @@
 
   #time-left,
   .time-window-value {
-    font-size: 4rem;
     font-weight: bold;
+  }
+
+  #time-left {
+    font-size: 4rem;
+  }
+
+  .time-window-value {
+    font-size: 3.5rem;
   }
 }
 
@@ -49,7 +56,16 @@ div[class*="-wrapper"] {
 }
 
 .modal-footer {
-  justify-content: space-around;
+  justify-content: space-evenly;
+}
+
+.btn {
+  font-weight: 600;
+  font-size: 1.2rem;
+}
+
+.btn[id$="crement"] {
+  font-size: 1rem;
 }
 
 #button-container {
@@ -57,5 +73,9 @@ div[class*="-wrapper"] {
 
   button {
     margin: 0.5rem 0;
+
+    * {
+      pointer-events: none;
+    }
   }
 }
