@@ -51,7 +51,7 @@ export default function ButtonComponent(props) {
         </Button>
       </Row>
       <Row>
-        <Button onClick={props.handleShow}>
+        <Button id="settings" onClick={props.handleShow}>
           <FontAwesomeIcon icon={faSlidersH} /> Settings
         </Button>
       </Row>

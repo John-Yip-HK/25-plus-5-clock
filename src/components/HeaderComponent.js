@@ -78,7 +78,7 @@ export default function Header(props) {
       document.querySelectorAll(".time-window-value")
     ).map((element) => +element.innerHTML);
 
-    props.setTime(newSession, newBreakTime);
+    props.adjustTime(newSession, newBreakTime, 0);
 
     props.handleClose();
   };

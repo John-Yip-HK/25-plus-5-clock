@@ -7,97 +7,148 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import "./App.scss";
 
 function App() {
-  const defaultSession = 25,
-    defaultBreak = 5,
-    defaultCountDown = [null, null],
-    defaultTimerMode = "S";
+  const defaults = {
+    sessionMinutes: 25,
+    breakMinutes: 5,
+    seconds: 0,
+    timerMode: "S",
+  };
+
+  for (let defaultKey in defaults) {
+    Object.defineProperty(defaults, defaultKey, {
+      writeable: false,
+      eumerable: true,
+      configurable: false,
+    });
+  }
 
   const [show, setShow] = useState(false);
 
-  const [session, setSession] = useState(defaultSession);
-  const [breakTime, setBreakTime] = useState(defaultBreak);
-
-  const [countDown, setCountDown] = useState(defaultCountDown);
+  const [mainMinutes, setMainMinutes] = useState(defaults.sessionMinutes);
+  const [auxiliaryMinutes, setAuxiliaryMinutes] = useState(
+    defaults.breakMinutes
+  );
+  const [seconds, setSeconds] = useState(defaults.seconds);
 
   const [timer, setTimer] = useState(null);
-  const [timerMode, setTimerMode] = useState(defaultTimerMode);
+  const [timerMode, setTimerMode] = useState(defaults.timerMode);
 
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
 
-  const setTime = (
-    newSession = defaultSession,
-    newBreakTime = defaultBreak
+  const adjustTime = (
+    newMainMinutes = mainMinutes,
+    newAuxiliaryMinutes = auxiliaryMinutes,
+    newSeconds = seconds
   ) => {
-    setSession(newSession);
-    setBreakTime(newBreakTime);
-
-    let timeDisplay = (newSession < 10 ? "0" : "") + newSession;
-    document.getElementById("time-left").innerHTML = `${timeDisplay}:00`;
-
-    timeDisplay = newBreakTime;
-    document.getElementById("break-time-span").innerHTML = `${timeDisplay}:00`;
+    setMainMinutes(newMainMinutes);
+    setAuxiliaryMinutes(newAuxiliaryMinutes);
+    setSeconds(newSeconds);
   };
+
+  const getLabels = () => [
+    document.getElementById("timer-label"),
+    document.getElementById("auxiliary-time-label"),
+  ];
 
   const resetTime = () => {
     clearTimeout(timer);
     setTimer(null);
-    setTimerMode(defaultTimerMode);
+    setTimerMode(defaults.timerMode);
 
-    setTime();
-    setCountDown(defaultCountDown);
+    adjustTime(
+      defaults.sessionMinutes,
+      defaults.breakMinutes,
+      defaults.seconds
+    );
 
-    document.getElementById("time-left").innerHTML = `${session}:00`;
+    document.getElementById("settings").removeAttribute("disabled");
+
+    const [timerLabel, auxTimeLabel] = getLabels();
+    timerLabel.innerHTML = "Session";
+    auxTimeLabel.innerHTML = "Break";
   };
 
   const runTimer = () => {
-    if (countDown.filter((time) => time !== null).length === 0) {
-      countDown[0] = session;
-      countDown[1] = 0;
-    }
+    document.getElementById("settings").setAttribute("disabled", "");
+    const [timerLabel, auxTimeLabel] = getLabels();
+    const [initialMainMin, initialAuxMin] = [mainMinutes, auxiliaryMinutes];
 
-    const runCountDown = (timePair) => {
-      let minutesDisplay = (timePair[0] < 10 ? "0" : "") + timePair[0];
-      let secondsDisplay = (timePair[1] < 10 ? "0" : "") + timePair[1];
-      document.getElementById(
-        "time-left"
-      ).innerHTML = `${minutesDisplay}:${secondsDisplay}`;
+    function countDown(mainMin, auxMin, sec, mode) {
+      if (mainMin === 0 && sec === 0) {
+        mode = mode === "S" ? "B" : "S";
 
-      let timeoutFunction;
-
-      if (timePair[1] === 0) {
-        if (timePair[0] === 0) {
-          const newTimerMode = timerMode === "S" ? "B" : "S";
-          setTimerMode(newTimerMode);
-
-          timeoutFunction = () => {
-            countDown[0] = newTimerMode === "S" ? session : breakTime;
-            countDown[1] = 0;
-            document.getElementById("timer-label").innerHTML =
-              document.getElementById("timer-label").innerHTML === "Session"
-                ? "Break"
-                : "Session";
-            // Make the alarm ring.
-          };
+        if (mode === "B") {
+          mainMin = initialAuxMin;
+          auxMin = initialMainMin;
         } else {
-          timeoutFunction = () => {
-            countDown[0] = countDown[0] - 1;
-            countDown[1] = 59;
-          };
+          mainMin = initialMainMin;
+          auxMin = initialAuxMin;
         }
+      } else if (sec === 0) {
+        --mainMin;
+        sec = 59;
       } else {
-        timeoutFunction = () => (countDown[1] -= 1);
+        --sec;
       }
 
       setTimer(
-        setTimeout(() => {
-          timeoutFunction();
-          runCountDown(countDown);
-        }, 1000)
-      );
-    };
+        setTimeout(
+          (newMainMin, newAuxMin, newSec) => {
+            adjustTime(newMainMin, newAuxMin, newSec);
 
-    runCountDown(countDown);
+            if (mode === "B") {
+              timerLabel.innerHTML = "Break";
+              auxTimeLabel.innerHTML = "Session";
+            } else {
+              timerLabel.innerHTML = "Session";
+              auxTimeLabel.innerHTML = "Break";
+            }
+
+            countDown(newMainMin, newAuxMin, newSec, mode);
+          },
+          1000,
+          mainMin,
+          auxMin,
+          sec
+        )
+      );
+    }
+
+    countDown(mainMinutes, auxiliaryMinutes, seconds, timerMode);
+
+    // function countDown() {
+    //   console.log(`${mainMinutes}:${seconds}`);
+
+    //   let [mainMin, auxMin, sec] = [mainMinutes, auxiliaryMinutes, seconds];
+    //   if (mainMin === 0 && sec === 0) {
+    //     setTimerMode(timerMode === "S" ? "B" : "S");
+
+    //     const newAuxMin = mainMin;
+    //     mainMin = auxMin;
+    //     auxMin = newAuxMin;
+    //   } else if (sec === 0) {
+    //     --mainMin;
+    //     sec = 59;
+    //   } else {
+    //     --sec;
+    //   }
+
+    //   setTimer(
+    //     setTimeout(
+    //       (mainMin, auxMin, sec) => {
+    //         adjustTime(mainMin, auxMin, sec);
+    //         countDown();
+    //       },
+    //       1000,
+    //       mainMin,
+    //       auxMin,
+    //       sec
+    //     )
+    //   );
+    // }
+
+    // countDown();
   };
 
   const pauseTimer = () => {
@@ -111,13 +162,17 @@ function App() {
         <Header
           show={show}
           handleClose={handleClose}
-          setTime={setTime}
-          session={session}
-          breakTime={breakTime}
+          adjustTime={adjustTime}
+          session={mainMinutes}
+          breakTime={auxiliaryMinutes}
         />
       </Row>
       <Row>
-        <Timer session={session} breakTime={breakTime} />
+        <Timer
+          mainMinutes={mainMinutes}
+          auxiliaryMinutes={auxiliaryMinutes}
+          seconds={seconds}
+        />
       </Row>
       <Row>
         <Buttons

@@ -3,6 +3,11 @@ import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 
 export default function TimerComponent(props) {
+  const twoPlaceTime = (time) => (time < 10 ? "0" : "") + time;
+
+  const twoPlaceSeconds = twoPlaceTime(props.seconds);
+  const twoPlaceMainMinutes = twoPlaceTime(props.mainMinutes);
+
   return (
     <Container id="timer">
       <Row>
@@ -10,12 +15,15 @@ export default function TimerComponent(props) {
       </Row>
       <Row>
         <Col>
-          <h1 id="time-left">{props.session}:00</h1>
+          <h1 id="time-left">
+            {twoPlaceMainMinutes}:{twoPlaceSeconds}
+          </h1>
         </Col>
       </Row>
       <Row>
-        <Col id="break-time">
-          Break: <span id="break-time-span">{props.breakTime}:00</span>
+        <Col id="auxiliary-time">
+          <span id="auxiliary-time-label">Break</span>:&nbsp;
+          <span id="auxiliary-time-span">{props.auxiliaryMinutes}:00</span>
         </Col>
       </Row>
     </Container>
