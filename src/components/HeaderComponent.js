@@ -39,9 +39,10 @@ export default function Header(props) {
             <h2 id={`${details["id-prefix"]}-label`}>{details.title}</h2>
           </Col>
         </Row>
-        <Row className="d-flex justify-content-center align-items-center">
+        <Row className="adjust-row d-flex align-items-center">
           <Col>
             <Button
+              variant="outline-primary"
               id={`${details["id-prefix"]}-decrement`}
               onClick={decreaseTime}
             >
@@ -60,6 +61,7 @@ export default function Header(props) {
           </Col>
           <Col>
             <Button
+              variant="outline-primary"
               id={`${details["id-prefix"]}-increment`}
               onClick={increaseTime}
             >

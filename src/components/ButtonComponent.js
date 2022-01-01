@@ -5,12 +5,7 @@ import Row from "react-bootstrap/Row";
 import Button from "react-bootstrap/Button";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import {
-  faSlidersH,
-  faPlay,
-  faPause,
-  faRedoAlt,
-} from "@fortawesome/free-solid-svg-icons";
+import { faPlay, faPause, faRedoAlt } from "@fortawesome/free-solid-svg-icons";
 
 export default function ButtonComponent(props) {
   const [startStopIcon, setStartStopIcon] = useState(faPlay);

@@ -1,4 +1,5 @@
 #root {
+  min-height: 100vh;
   display: flex;
   align-items: center;
 }
@@ -10,48 +11,41 @@
 
 #timer,
 .time-window {
-  padding: 0.5rem 1rem;
+  width: 100%;
 
+  text-align: center;
+}
+
+.adjust-row {
+  margin: 0.5rem 0;
+}
+
+#timer {
+  padding: 0.5rem 1rem;
   border: 1px solid black;
   border-radius: 1rem;
-  text-align: center;
-
-  #time-left,
-  .time-window-value {
-    font-weight: bold;
-  }
 
   #time-left {
+    font-weight: 700;
     font-size: 4rem;
-  }
-
-  .time-window-value {
-    font-size: 2rem;
   }
 }
 
-.time-window {
-  margin: 0.5rem auto;
+.time-window-value {
+  font-weight: 600;
+  font-size: 2.5rem;
 }
 
 div[class*="-wrapper"] {
   text-align: center;
-  h1 {
+  h2 {
     margin: 0;
   }
-}
-
-.modal-footer {
-  justify-content: space-evenly;
 }
 
 .btn {
   font-weight: 600;
   font-size: 1.2rem;
-}
-
-.btn[id$="crement"] {
-  font-size: 1rem;
 }
 
 #button-container {
