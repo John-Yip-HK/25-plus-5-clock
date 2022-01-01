@@ -1,5 +1,4 @@
 #root {
-  height: 100vh;
   display: flex;
   align-items: center;
 }
@@ -15,7 +14,6 @@
 
   border: 1px solid black;
   border-radius: 1rem;
-
   text-align: center;
 
   #time-left,
@@ -28,30 +26,18 @@
   }
 
   .time-window-value {
-    font-size: 3.5rem;
+    font-size: 2rem;
   }
 }
 
 .time-window {
-  width: 75%;
   margin: 0.5rem auto;
 }
 
 div[class*="-wrapper"] {
   text-align: center;
-  width: 90%;
-
   h1 {
     margin: 0;
-  }
-}
-
-.adjust-button {
-  display: flex;
-  justify-content: center;
-
-  .btn {
-    width: 5rem;
   }
 }
 

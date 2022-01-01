@@ -8,10 +8,11 @@ import "./App.scss";
 
 function App() {
   const defaults = {
-    sessionMinutes: 25,
-    breakMinutes: 5,
+    mainMinutes: 25,
+    auxiliaryMinutes: 5,
     seconds: 0,
-    timerMode: "S",
+    mode: "S",
+    initMinutes: [null, null],
   };
 
   for (let defaultKey in defaults) {
@@ -22,69 +23,69 @@ function App() {
     });
   }
 
-  const [show, setShow] = useState(false);
-
-  const [mainMinutes, setMainMinutes] = useState(defaults.sessionMinutes);
-  const [auxiliaryMinutes, setAuxiliaryMinutes] = useState(
-    defaults.breakMinutes
-  );
-  const [seconds, setSeconds] = useState(defaults.seconds);
+  const [currTimerState, setCurrTimerState] = useState({
+    mainMinutes: defaults.mainMinutes,
+    auxiliaryMinutes: defaults.auxiliaryMinutes,
+    seconds: defaults.seconds,
+    mode: defaults.mode,
+  });
 
   const [timer, setTimer] = useState(null);
-  const [timerMode, setTimerMode] = useState(defaults.timerMode);
 
-  const handleClose = () => setShow(false);
-  const handleShow = () => setShow(true);
+  const [initMinutes, setInitMinutes] = useState(defaults.initMinutes);
 
   const adjustTime = (
-    newMainMinutes = mainMinutes,
-    newAuxiliaryMinutes = auxiliaryMinutes,
-    newSeconds = seconds
+    mainMinutes = defaults.mainMinutes,
+    auxiliaryMinutes = defaults.auxiliaryMinutes,
+    seconds = defaults.seconds,
+    mode = defaults.mode
   ) => {
-    setMainMinutes(newMainMinutes);
-    setAuxiliaryMinutes(newAuxiliaryMinutes);
-    setSeconds(newSeconds);
+    setCurrTimerState({
+      mainMinutes: mainMinutes,
+      auxiliaryMinutes: auxiliaryMinutes,
+      seconds: seconds,
+      mode: mode,
+    });
   };
-
-  const getLabels = () => [
-    document.getElementById("timer-label"),
-    document.getElementById("auxiliary-time-label"),
-  ];
 
   const resetTime = () => {
     clearTimeout(timer);
     setTimer(null);
-    setTimerMode(defaults.timerMode);
 
-    adjustTime(
-      defaults.sessionMinutes,
-      defaults.breakMinutes,
-      defaults.seconds
-    );
+    adjustTime();
+    setInitMinutes(defaults.initMinutes);
 
     document.getElementById("settings").removeAttribute("disabled");
 
-    const [timerLabel, auxTimeLabel] = getLabels();
-    timerLabel.innerHTML = "Session";
-    auxTimeLabel.innerHTML = "Break";
+    const beepAudio = document.getElementById("beep");
+    beepAudio.pause();
+    beepAudio.currentTime = 0;
   };
 
   const runTimer = () => {
     document.getElementById("settings").setAttribute("disabled", "");
-    const [timerLabel, auxTimeLabel] = getLabels();
-    const [initialMainMin, initialAuxMin] = [mainMinutes, auxiliaryMinutes];
+    initMinutes[0] =
+      initMinutes[0] === null ? currTimerState.mainMinutes : initMinutes[0];
+    initMinutes[1] =
+      initMinutes[1] === null
+        ? currTimerState.auxiliaryMinutes
+        : initMinutes[1];
 
     function countDown(mainMin, auxMin, sec, mode) {
       if (mainMin === 0 && sec === 0) {
         mode = mode === "S" ? "B" : "S";
 
         if (mode === "B") {
-          mainMin = initialAuxMin;
-          auxMin = initialMainMin;
+          mainMin = initMinutes[1];
+          auxMin = initMinutes[0];
         } else {
-          mainMin = initialMainMin;
-          auxMin = initialAuxMin;
+          mainMin = initMinutes[0];
+          auxMin = initMinutes[1];
         }
+
+        const beepAudio = document.getElementById("beep");
+        beepAudio.currentTime = 0;
+        beepAudio.play();
       } else if (sec === 0) {
         --mainMin;
         sec = 59;
@@ -93,62 +94,19 @@ function App() {
       }
 
       setTimer(
-        setTimeout(
-          (newMainMin, newAuxMin, newSec) => {
-            adjustTime(newMainMin, newAuxMin, newSec);
-
-            if (mode === "B") {
-              timerLabel.innerHTML = "Break";
-              auxTimeLabel.innerHTML = "Session";
-            } else {
-              timerLabel.innerHTML = "Session";
-              auxTimeLabel.innerHTML = "Break";
-            }
-
-            countDown(newMainMin, newAuxMin, newSec, mode);
-          },
-          1000,
-          mainMin,
-          auxMin,
-          sec
-        )
+        setTimeout(() => {
+          adjustTime(mainMin, auxMin, sec, mode);
+          countDown(mainMin, auxMin, sec, mode);
+        }, 1000)
       );
     }
 
-    countDown(mainMinutes, auxiliaryMinutes, seconds, timerMode);
-
-    // function countDown() {
-    //   console.log(`${mainMinutes}:${seconds}`);
-
-    //   let [mainMin, auxMin, sec] = [mainMinutes, auxiliaryMinutes, seconds];
-    //   if (mainMin === 0 && sec === 0) {
-    //     setTimerMode(timerMode === "S" ? "B" : "S");
-
-    //     const newAuxMin = mainMin;
-    //     mainMin = auxMin;
-    //     auxMin = newAuxMin;
-    //   } else if (sec === 0) {
-    //     --mainMin;
-    //     sec = 59;
-    //   } else {
-    //     --sec;
-    //   }
-
-    //   setTimer(
-    //     setTimeout(
-    //       (mainMin, auxMin, sec) => {
-    //         adjustTime(mainMin, auxMin, sec);
-    //         countDown();
-    //       },
-    //       1000,
-    //       mainMin,
-    //       auxMin,
-    //       sec
-    //     )
-    //   );
-    // }
-
-    // countDown();
+    countDown(
+      currTimerState.mainMinutes,
+      currTimerState.auxiliaryMinutes,
+      currTimerState.seconds,
+      currTimerState.mode
+    );
   };
 
   const pauseTimer = () => {
@@ -160,27 +118,31 @@ function App() {
     <Container className="d-flex align-items-center flex-column">
       <Row>
         <Header
-          show={show}
-          handleClose={handleClose}
           adjustTime={adjustTime}
-          session={mainMinutes}
-          breakTime={auxiliaryMinutes}
+          session={currTimerState.mainMinutes}
+          breakTime={currTimerState.auxiliaryMinutes}
         />
       </Row>
       <Row>
         <Timer
-          mainMinutes={mainMinutes}
-          auxiliaryMinutes={auxiliaryMinutes}
-          seconds={seconds}
+          mainMinutes={currTimerState.mainMinutes}
+          auxiliaryMinutes={currTimerState.auxiliaryMinutes}
+          seconds={currTimerState.seconds}
+          mode={currTimerState.mode}
         />
       </Row>
       <Row>
         <Buttons
-          handleShow={handleShow}
           resetTime={resetTime}
           runTimer={runTimer}
           pauseTimer={pauseTimer}
         />
+      </Row>
+      <Row className="display-none">
+        <audio
+          src="https://raw.githubusercontent.com/freeCodeCamp/cdn/master/build/testable-projects-fcc/audio/BeepSound.wav"
+          id="beep"
+        ></audio>
       </Row>
     </Container>
   );

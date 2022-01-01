@@ -36,10 +36,18 @@ export default function Header(props) {
       <Container className={`${details["id-prefix"]}-wrapper`}>
         <Row>
           <Col>
-            <h1 id={`${details["id-prefix"]}-label`}>{details.title}</h1>
+            <h2 id={`${details["id-prefix"]}-label`}>{details.title}</h2>
           </Col>
         </Row>
-        <Row>
+        <Row className="d-flex justify-content-center align-items-center">
+          <Col>
+            <Button
+              id={`${details["id-prefix"]}-decrement`}
+              onClick={decreaseTime}
+            >
+              {arrowDown}
+            </Button>
+          </Col>
           <Col>
             <div className="time-window">
               <h2
@@ -49,16 +57,6 @@ export default function Header(props) {
                 {tempTime}
               </h2>
             </div>
-          </Col>
-        </Row>
-        <Row className="adjust-button">
-          <Col>
-            <Button
-              id={`${details["id-prefix"]}-decrement`}
-              onClick={decreaseTime}
-            >
-              {arrowDown}
-            </Button>
           </Col>
           <Col>
             <Button
@@ -73,51 +71,31 @@ export default function Header(props) {
     );
   };
 
-  const handleConfirm = () => {
-    const [newSession, newBreakTime] = Array.from(
-      document.querySelectorAll(".time-window-value")
-    ).map((element) => +element.innerHTML);
-
-    props.adjustTime(newSession, newBreakTime, 0);
-
-    props.handleClose();
-  };
-
   return (
-    <>
-      <Col>
-        <h2 id="heading">25 + 5 Clock</h2>
-        <Modal
-          show={props.show}
-          onHide={props.handleClose}
-          aria-labelledby="contained-modal-title-vcenter"
-          centered
-        >
-          <Modal.Header closeButton>
-            <Modal.Title>Settings</Modal.Title>
-          </Modal.Header>
-          <Modal.Body>
-            {TimeWindow({
-              title: "Session Length",
-              "id-prefix": "session",
-              time: props.session,
-            })}
-            {TimeWindow({
-              title: "Break Length",
-              "id-prefix": "break",
-              time: props.breakTime,
-            })}
-          </Modal.Body>
-          <Modal.Footer>
-            <Button variant="secondary" onClick={props.handleClose}>
-              Cancel
-            </Button>
-            <Button variant="primary" onClick={handleConfirm}>
-              Confirm
-            </Button>
-          </Modal.Footer>
-        </Modal>
-      </Col>
-    </>
+    <Container className="d-flex align-items-center flex-column">
+      <Row>
+        <Col>
+          <h2 id="heading">25 + 5 Clock</h2>
+        </Col>
+      </Row>
+      <Row>
+        <Col>
+          {TimeWindow({
+            title: "Session Length",
+            "id-prefix": "session",
+            time: props.session,
+          })}
+        </Col>
+      </Row>
+      <Row>
+        <Col>
+          {TimeWindow({
+            title: "Break Length",
+            "id-prefix": "break",
+            time: props.breakTime,
+          })}
+        </Col>
+      </Row>
+    </Container>
   );
 }
