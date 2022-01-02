@@ -1,6 +1,6 @@
-import Modal from "react-bootstrap/Modal";
+import React, { useEffect } from "react";
+
 import Button from "react-bootstrap/Button";
-import Container from "react-bootstrap/Container";
 import Col from "react-bootstrap/Col";
 import Row from "react-bootstrap/Row";
 
@@ -53,7 +53,7 @@ export default function Header(props) {
     };
 
     return (
-      <Container className={`${details["id-prefix"]}-wrapper`}>
+      <Col className={`${details["id-prefix"]}-wrapper`}>
         <Row>
           <Col>
             <h2 id={`${details["id-prefix"]}-label`}>{details.title}</h2>
@@ -87,35 +87,53 @@ export default function Header(props) {
             </Button>
           </Col>
         </Row>
-      </Container>
+      </Col>
     );
   };
 
+  useEffect(() => {
+    function changeContainerElementArrangement() {
+      const container = document.getElementById("header-container"),
+        body = document.body;
+
+      if (body.clientWidth > body.clientHeight) {
+        container.classList.remove("flex-column", "align-items-center");
+        container.classList.add("flex-row", "justify-content-center");
+      } else {
+        container.classList.remove("flex-row", "justify-content-center");
+        container.classList.add("flex-column", "align-items-center");
+      }
+    }
+
+    window.onload = changeContainerElementArrangement();
+    window.addEventListener("resize", changeContainerElementArrangement);
+
+    return () => {
+      window.removeEventListener("resize", changeContainerElementArrangement);
+    };
+  });
+
   return (
-    <Container className="d-flex align-items-center flex-column">
+    <Col id="header-container" className="d-flex">
       <Row>
         <Col>
           <h2 id="heading">25 + 5 Clock</h2>
         </Col>
       </Row>
       <Row>
-        <Col>
-          {TimeWindow({
-            title: "Session Length",
-            "id-prefix": "session",
-            time: minutes.session,
-          })}
-        </Col>
+        {TimeWindow({
+          title: "Session Length",
+          "id-prefix": "session",
+          time: minutes.session,
+        })}
       </Row>
       <Row>
-        <Col>
-          {TimeWindow({
-            title: "Break Length",
-            "id-prefix": "break",
-            time: minutes.breakTime,
-          })}
-        </Col>
+        {TimeWindow({
+          title: "Break Length",
+          "id-prefix": "break",
+          time: minutes.breakTime,
+        })}
       </Row>
-    </Container>
+    </Col>
   );
 }

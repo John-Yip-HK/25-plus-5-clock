@@ -1,4 +1,3 @@
-import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 
@@ -12,7 +11,7 @@ export default function TimerComponent(props) {
   )}`;
 
   return (
-    <Container id="timer">
+    <Col id="timer">
       <Row>
         <Col id="timer-label">{timerLabel}</Col>
       </Row>
@@ -27,6 +26,6 @@ export default function TimerComponent(props) {
           <span id="auxiliary-time-span">{props.auxiliaryMinutes}:00</span>
         </Col>
       </Row>
-    </Container>
+    </Col>
   );
 }
