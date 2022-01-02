@@ -31,8 +31,10 @@ function App() {
   });
 
   const [timer, setTimer] = useState(null);
-
   const [initMinutes, setInitMinutes] = useState(defaults.initMinutes);
+  const [changedDuringPause, setChangedFlag] = useState(false);
+
+  const [isReset, setIsResetFlag] = useState(false);
 
   const adjustTime = (
     mainMinutes = defaults.mainMinutes,
@@ -55,7 +57,12 @@ function App() {
     adjustTime();
     setInitMinutes(defaults.initMinutes);
 
-    document.getElementById("settings").removeAttribute("disabled");
+    setChangedFlag(false);
+    setIsResetFlag(true);
+
+    Array.from(document.querySelectorAll(".adjust-row button")).forEach(
+      (button) => button.removeAttribute("disabled")
+    );
 
     const beepAudio = document.getElementById("beep");
     beepAudio.pause();
@@ -63,13 +70,19 @@ function App() {
   };
 
   const runTimer = () => {
-    document.getElementById("settings").setAttribute("disabled", "");
-    initMinutes[0] =
-      initMinutes[0] === null ? currTimerState.mainMinutes : initMinutes[0];
-    initMinutes[1] =
-      initMinutes[1] === null
-        ? currTimerState.auxiliaryMinutes
-        : initMinutes[1];
+    let changedFlag = changedDuringPause;
+
+    if (initMinutes[0] === null || initMinutes[1] === null || changedFlag) {
+      initMinutes[0] = currTimerState.mainMinutes;
+      initMinutes[1] = currTimerState.auxiliaryMinutes;
+      changedFlag = false;
+    }
+
+    setChangedFlag(changedFlag);
+
+    Array.from(document.querySelectorAll(".adjust-row button")).forEach(
+      (button) => button.setAttribute("disabled", "")
+    );
 
     function countDown(mainMin, auxMin, sec, mode) {
       if (mainMin === 0 && sec === 0) {
@@ -112,6 +125,10 @@ function App() {
   const pauseTimer = () => {
     clearTimeout(timer);
     setTimer(null);
+
+    Array.from(document.querySelectorAll(".adjust-row button")).forEach(
+      (button) => button.removeAttribute("disabled")
+    );
   };
 
   return (
@@ -119,8 +136,12 @@ function App() {
       <Row>
         <Header
           adjustTime={adjustTime}
+          setChangedFlag={setChangedFlag}
           session={currTimerState.mainMinutes}
+          isReset={isReset}
+          setIsResetFlag={setIsResetFlag}
           breakTime={currTimerState.auxiliaryMinutes}
+          mode={currTimerState.mode}
         />
       </Row>
       <Row>
