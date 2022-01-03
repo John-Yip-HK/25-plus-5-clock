@@ -24,12 +24,10 @@ export default function ButtonComponent(props) {
     }
   };
 
-  const handleReset = (event) => {
-    const elementWithCaption =
-      event.target.parentElement.parentElement.children[0].children[0]
-        .children[1];
+  const handleReset = () => {
+    const elementWithCaption = document.getElementById("start_stop_caption");
 
-    props.resetTime(document.getElementById("start_stop_caption"));
+    props.resetTime();
     setStartStopIcon(faPlay);
     elementWithCaption.innerHTML = "Start";
   };
