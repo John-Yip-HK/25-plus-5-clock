@@ -4,13 +4,20 @@
   align-items: center;
 }
 
-#heading {
-  font-size: 2rem;
-  margin-bottom: 1rem;
-}
+#header-container {
+  #heading {
+    text-align: center;
+    font-size: 2rem;
+  }
 
-.adjust-row {
-  margin: 0.5rem 0;
+  .row.landscape {
+    margin-top: 0.5rem;
+    grid-column: 1 / 3;
+  }
+
+  .adjust-row {
+    margin: 0.5rem 0;
+  }
 }
 
 #timer {

@@ -93,15 +93,22 @@ export default function Header(props) {
 
   useEffect(() => {
     function changeContainerElementArrangement() {
-      const container = document.getElementById("header-container"),
-        body = document.body;
+      const body = document.body,
+        container = document.getElementById("header-container"),
+        headingRow = container.firstElementChild;
 
       if (body.clientWidth > body.clientHeight) {
-        container.classList.remove("flex-column", "align-items-center");
-        container.classList.add("flex-row", "justify-content-center");
+        container.classList.remove(
+          "d-flex",
+          "flex-column",
+          "align-items-center"
+        );
+        container.classList.add("d-grid");
+        headingRow.classList.add("landscape");
       } else {
-        container.classList.remove("flex-row", "justify-content-center");
-        container.classList.add("flex-column", "align-items-center");
+        headingRow.classList.remove("landscape");
+        container.classList.remove("d-grid");
+        container.classList.add("d-flex", "flex-column", "align-items-center");
       }
     }
 
@@ -114,7 +121,7 @@ export default function Header(props) {
   });
 
   return (
-    <Col id="header-container" className="d-flex">
+    <Col id="header-container">
       <Row>
         <Col>
           <h2 id="heading">25 + 5 Clock</h2>

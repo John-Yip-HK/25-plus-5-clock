@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Container, Row } from "react-bootstrap";
 import Timer from "./components/TimerComponent";
 import Buttons from "./components/ButtonComponent";
@@ -130,6 +130,25 @@ function App() {
       (button) => button.removeAttribute("disabled")
     );
   };
+
+  useEffect(() => {
+    function changeContainerElementArrangement() {
+      const body = document.body;
+
+      if (body.clientWidth > body.clientHeight) {
+        body.style.setProperty("margin", "1rem 0");
+      } else {
+        body.style.removeProperty("margin");
+      }
+    }
+
+    window.onload = changeContainerElementArrangement();
+    window.addEventListener("resize", changeContainerElementArrangement);
+
+    return () => {
+      window.removeEventListener("resize", changeContainerElementArrangement);
+    };
+  });
 
   return (
     <Container className="d-flex align-items-center flex-column">

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 
 import Col from "react-bootstrap/Col";
 import Row from "react-bootstrap/Row";
@@ -34,21 +34,47 @@ export default function ButtonComponent(props) {
     elementWithCaption.innerHTML = "Start";
   };
 
+  useEffect(() => {
+    function changeContainerElementArrangement() {
+      const body = document.body,
+        btnContainer = document.getElementById("button-container"),
+        btnContainerParent = btnContainer.parentElement;
+
+      if (body.clientWidth > body.clientHeight) {
+        btnContainer.classList.remove("flex-column", "align-items-center");
+        btnContainer.classList.add("flex-row", "justify-content-evenly");
+        btnContainerParent.style.setProperty("width", "50%");
+      } else {
+        btnContainerParent.style.removeProperty("width");
+        btnContainer.classList.remove("flex-row", "justify-content-evenly");
+        btnContainer.classList.add("flex-column", "align-items-center");
+      }
+    }
+
+    window.onload = changeContainerElementArrangement();
+    window.addEventListener("resize", changeContainerElementArrangement);
+
+    return () => {
+      window.removeEventListener("resize", changeContainerElementArrangement);
+    };
+  });
+
   return (
-    <Col
-      id="button-container"
-      className="d-flex align-items-center flex-column"
-    >
+    <Col id="button-container" className="d-flex">
       <Row>
-        <Button id="start_stop" onClick={handleTimer}>
-          <FontAwesomeIcon icon={startStopIcon} />{" "}
-          <span id="start_stop_caption">Start</span>
-        </Button>
+        <Col>
+          <Button id="start_stop" onClick={handleTimer}>
+            <FontAwesomeIcon icon={startStopIcon} />{" "}
+            <span id="start_stop_caption">Start</span>
+          </Button>
+        </Col>
       </Row>
       <Row>
-        <Button id="reset" onClick={handleReset}>
-          <FontAwesomeIcon icon={faRedoAlt} /> Reset
-        </Button>
+        <Col>
+          <Button id="reset" variant="danger" onClick={handleReset}>
+            <FontAwesomeIcon icon={faRedoAlt} /> Reset
+          </Button>
+        </Col>
       </Row>
     </Col>
   );
