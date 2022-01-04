@@ -11,9 +11,10 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 
 const minutes = {
-  session: null,
-  breakTime: null,
-};
+    session: null,
+    breakTime: null,
+  },
+  _ = undefined;
 
 export default function Header(props) {
   const arrowUp = <FontAwesomeIcon icon={faArrowAltCircleUp} size="2x" />;
@@ -35,20 +36,53 @@ export default function Header(props) {
       if (OP === "UP" && tempTime < 60) ++tempTime;
       else if (OP === "DOWN" && tempTime > 1) --tempTime;
 
-      const lenDispElements = document.querySelectorAll("h2.time-window-value");
+      if (details["id-prefix"] === "session") {
+        minutes.session = tempTime;
+      } else {
+        minutes.breakTime = tempTime;
+      }
 
-      if (details["id-prefix"] === "session") minutes.session = tempTime;
-      else minutes.breakTime = tempTime;
+      /**
+       * When timer is paused:
+       * If props.mode === "S",
+       *  If session is changed,
+       *    Change the main minute only.
+       *  Else,
+       *    Change the auxiliary minute only.
+       * Else,
+       *   If break is changed,
+       *    Change the main minute only.
+       *  Else,
+       *    Change the auxiliary minute only.
+       */
 
-      lenDispElements[0].innerHTML = minutes.session;
-      lenDispElements[1].innerHTML = minutes.breakTime;
+      let newMainMin,
+        newAuxMin,
+        newSeconds = 0;
 
-      const [newMainMin, newAuxMin] = [
-        props.mode === "S" ? minutes.session : minutes.breakTime,
-        props.mode === "S" ? minutes.breakTime : minutes.session,
-      ];
+      if (props.mode === "S") {
+        newMainMin = minutes.session;
+        newAuxMin = minutes.breakTime;
 
-      props.adjustTime(newMainMin, newAuxMin, 0, props.mode);
+        if (details["id-prefix"] === "session") {
+          newAuxMin = _;
+        } else {
+          newMainMin = _;
+          newSeconds = _;
+        }
+      } else {
+        newMainMin = minutes.breakTime;
+        newAuxMin = minutes.session;
+
+        if (details["id-prefix"] === "break") {
+          newAuxMin = _;
+        } else {
+          newMainMin = _;
+          newSeconds = _;
+        }
+      }
+
+      props.adjustTime(newMainMin, newAuxMin, newSeconds);
       props.setChangedFlag(true);
     };
 

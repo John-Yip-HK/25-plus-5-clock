@@ -37,10 +37,10 @@ function App() {
   const [isReset, setIsResetFlag] = useState(false);
 
   const adjustTime = (
-    mainMinutes = defaults.mainMinutes,
-    auxiliaryMinutes = defaults.auxiliaryMinutes,
-    seconds = defaults.seconds,
-    mode = defaults.mode
+    mainMinutes = currTimerState.mainMinutes,
+    auxiliaryMinutes = currTimerState.auxiliaryMinutes,
+    seconds = currTimerState.seconds,
+    mode = currTimerState.mode
   ) => {
     setCurrTimerState({
       mainMinutes: mainMinutes,
@@ -54,7 +54,12 @@ function App() {
     clearTimeout(timer);
     setTimer(null);
 
-    adjustTime();
+    adjustTime(
+      defaults.mainMinutes,
+      defaults.auxiliaryMinutes,
+      defaults.seconds,
+      defaults.mode
+    );
     setInitMinutes(defaults.initMinutes);
 
     setChangedFlag(false);
