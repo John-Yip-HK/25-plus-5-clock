@@ -37,7 +37,7 @@ export default function Header(props) {
 
       const lenDispElements = document.querySelectorAll("h2.time-window-value");
 
-      if (details["id-prefix"] === "session") minutes.session = tempTime;
+      if (details.idPrefix === "session") minutes.session = tempTime;
       else minutes.breakTime = tempTime;
 
       lenDispElements[0].innerHTML = minutes.session;
@@ -53,34 +53,31 @@ export default function Header(props) {
     };
 
     return (
-      <Col className={`${details["id-prefix"]}-wrapper`}>
+      <Col className={`${details.idPrefix}-wrapper`}>
         <Row>
           <Col>
-            <h2 id={`${details["id-prefix"]}-label`}>{details.title}</h2>
+            <h2 id={`${details.idPrefix}-label`}>{details.title}</h2>
           </Col>
         </Row>
         <Row className="adjust-row d-flex align-items-center">
           <Col>
             <Button
               size="sm"
-              id={`${details["id-prefix"]}-decrement`}
+              id={`${details.idPrefix}-decrement`}
               onClick={() => setMinute("DOWN")}
             >
               {arrowDown}
             </Button>
           </Col>
           <Col>
-            <h2
-              className="time-window-value"
-              id={`${details["id-prefix"]}-length`}
-            >
+            <h2 className="time-window-value" id={`${details.idPrefix}-length`}>
               {tempTime}
             </h2>
           </Col>
           <Col>
             <Button
               size="sm"
-              id={`${details["id-prefix"]}-increment`}
+              id={`${details.idPrefix}-increment`}
               onClick={() => setMinute("UP")}
             >
               {arrowUp}
@@ -91,24 +88,28 @@ export default function Header(props) {
     );
   };
 
+  function TimerWindowParams(title, idPrefix, minutes) {
+    this.title = title;
+    this.idPrefix = idPrefix;
+    this.time = minutes;
+  }
+
   useEffect(() => {
     function changeContainerElementArrangement() {
       const body = document.body,
         container = document.getElementById("header-container"),
         headingRow = container.firstElementChild;
 
+      const containerClasses = ["d-flex", "flex-column", "align-items-center"];
+
       if (body.clientWidth > body.clientHeight) {
-        container.classList.remove(
-          "d-flex",
-          "flex-column",
-          "align-items-center"
-        );
+        container.classList.remove(...containerClasses);
         container.classList.add("d-grid");
         headingRow.classList.add("landscape");
       } else {
         headingRow.classList.remove("landscape");
         container.classList.remove("d-grid");
-        container.classList.add("d-flex", "flex-column", "align-items-center");
+        container.classList.add(...containerClasses);
       }
     }
 
@@ -128,18 +129,14 @@ export default function Header(props) {
         </Col>
       </Row>
       <Row>
-        {TimeWindow({
-          title: "Session Length",
-          "id-prefix": "session",
-          time: minutes.session,
-        })}
+        {TimeWindow(
+          new TimerWindowParams("Session Length", "session", minutes.session)
+        )}
       </Row>
       <Row>
-        {TimeWindow({
-          title: "Break Length",
-          "id-prefix": "break",
-          time: minutes.breakTime,
-        })}
+        {TimeWindow(
+          new TimerWindowParams("Break Length", "break", minutes.breakTime)
+        )}
       </Row>
     </Col>
   );

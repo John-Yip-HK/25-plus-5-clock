@@ -1,12 +1,18 @@
 import React, { useState, useEffect } from "react";
+
 import { Container, Row } from "react-bootstrap";
 import Timer from "./components/TimerComponent";
 import Buttons from "./components/ButtonComponent";
 import Header from "./components/HeaderComponent";
+
+import useBreakpoint from "bootstrap-5-breakpoint-react-hook";
+
 import "bootstrap/dist/css/bootstrap.min.css";
 import "./App.scss";
 
 function App() {
+  const breakpoint = useBreakpoint();
+
   const defaults = {
     mainMinutes: 25,
     auxiliaryMinutes: 5,
@@ -135,7 +141,10 @@ function App() {
     function changeContainerElementArrangement() {
       const body = document.body;
 
-      if (body.clientWidth > body.clientHeight) {
+      if (
+        body.clientWidth > body.clientHeight &&
+        ["xs", "sm"].includes(breakpoint)
+      ) {
         body.style.setProperty("margin", "1rem 0");
       } else {
         body.style.removeProperty("margin");
