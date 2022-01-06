@@ -38,14 +38,19 @@ export default function ButtonComponent(props) {
         btnContainer = document.getElementById("button-container"),
         btnContainerParent = btnContainer.parentElement;
 
+      const btnPortraitClasses = ["flex-column", "align-items-center"],
+        btnLandscapeClasses = ["flex-row", "justify-content-evenly"];
+
+      let width = 50;
+
       if (body.clientWidth > body.clientHeight) {
-        btnContainer.classList.remove("flex-column", "align-items-center");
-        btnContainer.classList.add("flex-row", "justify-content-evenly");
-        btnContainerParent.style.setProperty("width", "50%");
+        btnContainer.classList.remove(...btnPortraitClasses);
+        btnContainer.classList.add(...btnLandscapeClasses);
+        btnContainerParent.style.setProperty("width", `${width}%`);
       } else {
         btnContainerParent.style.removeProperty("width");
-        btnContainer.classList.remove("flex-row", "justify-content-evenly");
-        btnContainer.classList.add("flex-column", "align-items-center");
+        btnContainer.classList.remove(...btnLandscapeClasses);
+        btnContainer.classList.add(...btnPortraitClasses);
       }
     }
 
