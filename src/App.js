@@ -4,6 +4,7 @@ import { Container, Row } from "react-bootstrap";
 import Timer from "./components/TimerComponent";
 import Buttons from "./components/ButtonComponent";
 import Header from "./components/HeaderComponent";
+import Settings from "./components/SettingsComponent";
 
 import useBreakpoint from "bootstrap-5-breakpoint-react-hook";
 
@@ -182,6 +183,17 @@ function App() {
           mainMinutes={currTimerState.mainMinutes}
           auxiliaryMinutes={currTimerState.auxiliaryMinutes}
           seconds={currTimerState.seconds}
+          mode={currTimerState.mode}
+        />
+      </Row>
+      <Row id="settings-container">
+        <Settings
+          adjustTime={adjustTime}
+          setChangedFlag={setChangedFlag}
+          session={currTimerState.mainMinutes}
+          isReset={isReset}
+          setIsResetFlag={setIsResetFlag}
+          breakTime={currTimerState.auxiliaryMinutes}
           mode={currTimerState.mode}
         />
       </Row>
