@@ -8,6 +8,8 @@
   min-height: 100vh;
   display: flex;
   align-items: center;
+
+  font-size: 5vmin;
 }
 
 #header-container {
@@ -23,6 +25,7 @@
   padding: 0.5em 1em;
   border: 0.3em solid black;
   border-radius: 1em;
+  width: 70vmin;
 
   #time-left {
     font-weight: 700;
@@ -36,16 +39,29 @@
 }
 
 #settings-container {
-  width: 100%;
+  & > div.row {
+    margin: 0;
+    padding: 0;
+  }
 
   div[class*="-wrapper"] {
     text-align: center;
+    padding: 0;
+
     h2 {
       margin: 0;
     }
 
     .adjust-row {
       margin: 0.5em 0;
+
+      .time-window-value-col {
+        width: 20vmin;
+
+        .time-window-value {
+          font-size: 150%;
+        }
+      }
     }
   }
 }

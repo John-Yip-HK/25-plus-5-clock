@@ -41,12 +41,12 @@ export default function ButtonComponent(props) {
       const btnPortraitClasses = ["flex-column", "align-items-center"],
         btnLandscapeClasses = ["flex-row", "justify-content-evenly"];
 
-      let width = 50;
+      let width = 70;
 
       if (body.clientWidth > body.clientHeight) {
         btnContainer.classList.remove(...btnPortraitClasses);
         btnContainer.classList.add(...btnLandscapeClasses);
-        btnContainerParent.style.setProperty("width", `${width}%`);
+        btnContainerParent.style.setProperty("width", `${width}vw`);
       } else {
         btnContainerParent.style.removeProperty("width");
         btnContainer.classList.remove(...btnLandscapeClasses);

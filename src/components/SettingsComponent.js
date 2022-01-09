@@ -17,6 +17,7 @@ const minutes = {
   _ = undefined;
 
 export default function Settings(props) {
+  <i class="far fa-arrow-alt-circle-up"></i>;
   const arrowUp = <FontAwesomeIcon icon={faArrowAltCircleUp} size="2x" />;
   const arrowDown = <FontAwesomeIcon icon={faArrowAltCircleDown} size="2x" />;
   let isResetFlag = props.isReset;
@@ -89,7 +90,7 @@ export default function Settings(props) {
               {arrowDown}
             </Button>
           </Col>
-          <Col>
+          <Col className="time-window-value-col">
             <h2 className="time-window-value" id={`${details.idPrefix}-length`}>
               {tempTime}
             </h2>
@@ -120,7 +121,7 @@ export default function Settings(props) {
         container = document.getElementById("settings-container");
 
       const containerPortraitClasses = ["flex-column", "align-items-center"],
-        containerLandscapeClasses = ["flex-row", "justify-content-evenly"];
+        containerLandscapeClasses = ["justify-content-evenly"];
 
       if (body.clientWidth > body.clientHeight) {
         container.classList.remove(...containerPortraitClasses);
