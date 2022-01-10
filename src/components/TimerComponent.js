@@ -11,7 +11,7 @@ export default function TimerComponent(props) {
   )}`;
 
   return (
-    <Col id="timer">
+    <Col id="timer" className="d-flex flex-column justify-content-center">
       <Row>
         <Col id="timer-label">{timerLabel}</Col>
       </Row>

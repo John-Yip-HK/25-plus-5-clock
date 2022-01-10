@@ -34,8 +34,7 @@ export default function ButtonComponent(props) {
 
   useEffect(() => {
     function changeContainerElementArrangement() {
-      const body = document.body,
-        btnContainer = document.getElementById("button-container"),
+      const btnContainer = document.getElementById("button-container"),
         btnContainerParent = btnContainer.parentElement;
 
       const btnPortraitClasses = ["flex-column", "align-items-center"],
@@ -43,7 +42,7 @@ export default function ButtonComponent(props) {
 
       let width = 70;
 
-      if (body.clientWidth > body.clientHeight) {
+      if (window.innerWidth > window.innerHeight) {
         btnContainer.classList.remove(...btnPortraitClasses);
         btnContainer.classList.add(...btnLandscapeClasses);
         btnContainerParent.style.setProperty("width", `${width}vw`);

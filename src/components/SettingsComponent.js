@@ -28,7 +28,7 @@ export default function Settings(props) {
     isResetFlag = false;
   }
 
-  props.setIsResetFlag(isResetFlag);
+  setTimeout(() => props.setIsResetFlag(isResetFlag), 0);
 
   const TimeWindow = (details) => {
     let tempTime = details.time;
@@ -117,13 +117,12 @@ export default function Settings(props) {
 
   useEffect(() => {
     function changeContainerElementArrangement() {
-      const body = document.body,
-        container = document.getElementById("settings-container");
+      const container = document.getElementById("settings-container");
 
       const containerPortraitClasses = ["flex-column", "align-items-center"],
         containerLandscapeClasses = ["justify-content-evenly"];
 
-      if (body.clientWidth > body.clientHeight) {
+      if (window.innerWidth > window.innerHeight) {
         container.classList.remove(...containerPortraitClasses);
         container.classList.add(...containerLandscapeClasses);
         Array.from(container.children).forEach((row) =>

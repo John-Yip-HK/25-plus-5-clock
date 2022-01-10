@@ -4,8 +4,15 @@
 @import "../node_modules/bootstrap/scss/mixins";
 @import "../node_modules/bootstrap/scss/root";
 
+@mixin setTimerDimension($timer-width-height: 70vmin) {
+  width: $timer-width-height;
+  height: $timer-width-height;
+}
+
 #root {
   min-height: 100vh;
+  min-width: 200px;
+
   display: flex;
   align-items: center;
 
@@ -20,16 +27,17 @@
 }
 
 #timer {
+  @include setTimerDimension();
+
   text-align: center;
   margin: 1em 0;
   padding: 0.5em 1em;
   border: 0.3em solid black;
-  border-radius: 1em;
-  width: 70vmin;
+  border-radius: 50%;
 
   #time-left {
     font-weight: 700;
-    font-size: 4em;
+    font-size: 400%;
   }
 }
 
@@ -54,16 +62,12 @@
 
     .adjust-row {
       margin: 0.5em 0;
-
-      .time-window-value-col {
-        width: 20vmin;
-
-        .time-window-value {
-          font-size: 150%;
-        }
-      }
     }
   }
+}
+
+.time-window-value-col {
+  width: 20vmin;
 }
 
 .btn {
@@ -73,7 +77,7 @@
 
 #button-container {
   button {
-    margin: 0.5em 0;
+    margin: 0.3em 0;
 
     * {
       pointer-events: none;
@@ -81,8 +85,48 @@
   }
 }
 
+@include media-breakpoint-up(sm) {
+  @media only screen and (min-aspect-ratio: 2) and (orientation: landscape) and (hover: none) {
+    #timer {
+      @include setTimerDimension(80vmin);
+
+      #time-left {
+        font-size: 3em;
+      }
+    }
+  }
+}
+
 @include media-breakpoint-up(md) {
   #root {
-    font-size: 150%;
+    font-size: 3vmin;
+  }
+
+  #timer {
+    @include setTimerDimension(40vw);
+
+    #time-left {
+      font-size: 350%;
+    }
+  }
+
+  .time-window-value-col {
+    width: 15vmin;
+  }
+
+  @media only screen and (min-aspect-ratio: 2) and (orientation: landscape) and (hover: none) {
+    #root {
+      font-size: 5vmin;
+    }
+
+    .time-window-value-col {
+      width: 20vmin;
+    }
+  }
+}
+
+@include media-breakpoint-up(lg) {
+  #timer {
+    @include setTimerDimension(50vmin);
   }
 }
