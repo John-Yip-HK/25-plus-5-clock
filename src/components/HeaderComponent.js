@@ -27,7 +27,9 @@ export default function Header(props) {
     isResetFlag = false;
   }
 
-  props.setIsResetFlag(isResetFlag);
+  setTimeout(() => {
+    props.setIsResetFlag(isResetFlag);
+  }, 0);
 
   const TimeWindow = (details) => {
     let tempTime = details.time;
