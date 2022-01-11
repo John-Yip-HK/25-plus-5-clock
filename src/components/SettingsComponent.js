@@ -5,10 +5,7 @@ import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import {
-  faArrowAltCircleUp,
-  faArrowAltCircleDown,
-} from "@fortawesome/free-solid-svg-icons";
+import { faArrowUp, faArrowDown } from "@fortawesome/free-solid-svg-icons";
 
 const minutes = {
     session: null,
@@ -18,8 +15,8 @@ const minutes = {
 
 export default function Settings(props) {
   <i class="far fa-arrow-alt-circle-up"></i>;
-  const arrowUp = <FontAwesomeIcon icon={faArrowAltCircleUp} size="2x" />;
-  const arrowDown = <FontAwesomeIcon icon={faArrowAltCircleDown} size="2x" />;
+  const arrowUp = <FontAwesomeIcon icon={faArrowUp} size="2x" />;
+  const arrowDown = <FontAwesomeIcon icon={faArrowDown} size="2x" />;
   let isResetFlag = props.isReset;
 
   if (minutes.session === null || isResetFlag) {

@@ -76,6 +76,8 @@ function App() {
       (button) => button.removeAttribute("disabled")
     );
 
+    document.getElementById("timer").classList.remove("run");
+
     const beepAudio = document.getElementById("beep");
     beepAudio.pause();
     beepAudio.currentTime = 0;
@@ -95,6 +97,8 @@ function App() {
     Array.from(document.querySelectorAll(".adjust-row button")).forEach(
       (button) => button.setAttribute("disabled", "")
     );
+
+    document.getElementById("timer").classList.add("run");
 
     function countDown(mainMin, auxMin, sec, mode) {
       if (mainMin === 0 && sec === 0) {
@@ -141,6 +145,8 @@ function App() {
     Array.from(document.querySelectorAll(".adjust-row button")).forEach(
       (button) => button.removeAttribute("disabled")
     );
+
+    document.getElementById("timer").classList.remove("run");
   };
 
   useEffect(() => {
