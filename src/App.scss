@@ -19,13 +19,6 @@
   font-size: 5vmin;
 }
 
-#header-container {
-  #heading {
-    text-align: center;
-    font-size: 2em;
-  }
-}
-
 #timer {
   @include setTimerDimension();
 

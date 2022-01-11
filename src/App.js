@@ -174,15 +174,7 @@ function App() {
   return (
     <Container className="d-flex align-items-center flex-column">
       <Row>
-        <Header
-          adjustTime={adjustTime}
-          setChangedFlag={setChangedFlag}
-          session={currTimerState.mainMinutes}
-          isReset={isReset}
-          setIsResetFlag={setIsResetFlag}
-          breakTime={currTimerState.auxiliaryMinutes}
-          mode={currTimerState.mode}
-        />
+        <Header />
       </Row>
       <Row>
         <Timer
