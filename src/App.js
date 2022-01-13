@@ -150,9 +150,11 @@ function App() {
   };
 
   useEffect(() => {
-    function changeContainerElementArrangement() {
-      const body = document.body;
+    const body = document.body,
+      toggler = document.getElementById("theme-toggler"),
+      darkThemeMq = window.matchMedia("(prefers-color-scheme: dark)");
 
+    function changeContainerElementArrangement() {
       if (
         body.clientWidth > body.clientHeight &&
         ["xs", "sm"].includes(breakpoint)
@@ -163,10 +165,38 @@ function App() {
       }
     }
 
-    window.onload = changeContainerElementArrangement();
+    function checkSystemTheme() {
+      if (darkThemeMq.matches) {
+        // Theme set to dark.
+        toggler.checked = true;
+      } else {
+        // Theme set to light.
+        toggler.checked = false;
+      }
+    }
+
+    function changeTheme() {
+      if (toggler.checked) body.classList.add("dark");
+      else body.classList.remove("dark");
+    }
+
+    function onloadEvents() {
+      changeContainerElementArrangement();
+      checkSystemTheme();
+      changeTheme();
+    }
+
+    window.onload = onloadEvents();
+
     window.addEventListener("resize", changeContainerElementArrangement);
+    darkThemeMq.addEventListener("change", checkSystemTheme);
+    toggler.addEventListener("click", changeTheme);
+    toggler.addEventListener("change", changeTheme);
 
     return () => {
+      toggler.removeEventListener("change", changeTheme);
+      toggler.removeEventListener("click", changeTheme);
+      darkThemeMq.removeEventListener("change", checkSystemTheme);
       window.removeEventListener("resize", changeContainerElementArrangement);
     };
   });

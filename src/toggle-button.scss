@@ -1,3 +1,9 @@
+@import "../node_modules/bootstrap/scss/functions";
+
+@import "../node_modules/bootstrap/scss/variables";
+@import "../node_modules/bootstrap/scss/mixins";
+@import "../node_modules/bootstrap/scss/root";
+
 $transition-time: 0.2s;
 
 /* The switch - the box around the slider */
@@ -33,7 +39,7 @@ $transition-time: 0.2s;
 
 .slider:before {
   position: absolute;
-  content: "";
+  content: "🌞";
   height: 26px;
   width: 26px;
   left: 4px;
@@ -44,14 +50,13 @@ $transition-time: 0.2s;
 }
 
 input:checked + .slider {
-  background-color: #2196f3;
-}
-
-input:focus + .slider {
-  box-shadow: 0 0 10px #2196f3;
+  background-color: $teal-500;
 }
 
 input:checked + .slider:before {
+  content: "🌛";
+  background-color: $gray-900;
+
   -webkit-transform: translateX(26px);
   -ms-transform: translateX(26px);
   transform: translateX(26px);

@@ -9,6 +9,78 @@
   height: $timer-width-height;
 }
 
+@mixin transition() {
+  transition-property: all;
+  transition-duration: 0.3s;
+}
+
+@mixin setTheme($dark: false) {
+  @if $dark {
+    background-color: $gray-900;
+    color: $gray-200;
+
+    #timer {
+      border-color: $black;
+
+      #time-left {
+        font-weight: 500;
+      }
+    }
+
+    .btn {
+      font-weight: 500;
+    }
+
+    #settings-container {
+      .btn {
+        color: $gray-200;
+      }
+
+      .time-window-value {
+        font-weight: 500;
+      }
+    }
+  } @else {
+    background-color: $gray-200;
+    color: $gray-900;
+
+    #timer {
+      border-color: $black;
+
+      #time-left {
+        font-weight: 700;
+      }
+    }
+
+    .btn {
+      font-weight: 600;
+    }
+
+    #settings-container {
+      .btn {
+        color: $black;
+      }
+
+      .time-window-value {
+        font-weight: 600;
+      }
+    }
+  }
+
+  #timer.run {
+    border-color: $orange;
+  }
+}
+
+body {
+  @include setTheme();
+  @include transition();
+}
+
+body.dark {
+  @include setTheme(true);
+}
+
 #root {
   min-height: 100vh;
   min-width: 200px;
@@ -21,29 +93,27 @@
 
 #timer {
   @include setTimerDimension();
+  @include transition();
 
   text-align: center;
   margin: 1em 0;
   padding: 0.5em 1em;
-  border: 0.3em solid black;
+  border-width: 0.3em;
+  border-style: solid;
   border-radius: 50%;
 
-  transition-property: border-color;
-  transition-duration: 0.3s;
   transition-timing-function: ease-out;
 
   #time-left {
-    font-weight: 700;
+    @include transition();
+
     font-size: 400%;
   }
 }
 
-#timer.run {
-  border-color: $orange;
-}
-
 .btn {
-  font-weight: 600;
+  @include transition();
+
   font-size: 1.2em;
 }
 
@@ -68,7 +138,6 @@
         width: 20vmin;
 
         .time-window-value {
-          font-weight: 600;
           font-size: 2em;
         }
       }
@@ -76,7 +145,6 @@
       .btn {
         background-color: transparent;
         border-color: transparent;
-        color: $black;
         box-shadow: none;
       }
 

@@ -9,7 +9,7 @@ export default function Header() {
       <Row>
         <Col>
           <label className="switch">
-            <input type="checkbox" />
+            <input type="checkbox" id="theme-toggler" />
             <span className="slider round"></span>
           </label>
         </Col>
