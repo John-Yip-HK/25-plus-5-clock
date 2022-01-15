@@ -65,7 +65,7 @@ export default function ButtonComponent(props) {
     <Col id="button-container" className="d-flex">
       <Row>
         <Col>
-          <Button id="start_stop" onClick={handleTimer}>
+          <Button id="start_stop" variant="outline-dark" onClick={handleTimer}>
             <FontAwesomeIcon icon={startStopIcon} />{" "}
             <span id="start_stop_caption">Start</span>
           </Button>
@@ -73,7 +73,7 @@ export default function ButtonComponent(props) {
       </Row>
       <Row>
         <Col>
-          <Button id="reset" variant="danger" onClick={handleReset}>
+          <Button id="reset" variant="outline-danger" onClick={handleReset}>
             <FontAwesomeIcon icon={faRedoAlt} /> Reset
           </Button>
         </Col>

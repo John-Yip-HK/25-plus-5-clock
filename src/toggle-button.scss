@@ -37,9 +37,9 @@ $transition-time: 0.2s;
   transition: $transition-time;
 }
 
-.slider:before {
+.slider::before {
   position: absolute;
-  content: "🌞";
+  content: "";
   height: 26px;
   width: 26px;
   left: 4px;
@@ -50,11 +50,11 @@ $transition-time: 0.2s;
 }
 
 input:checked + .slider {
-  background-color: $teal-500;
+  background-color: $orange;
 }
 
-input:checked + .slider:before {
-  content: "🌛";
+input:checked + .slider::before {
+  content: "";
   background-color: $gray-900;
 
   -webkit-transform: translateX(26px);
@@ -67,6 +67,6 @@ input:checked + .slider:before {
   border-radius: 34px;
 }
 
-.slider.round:before {
+.slider.round::before {
   border-radius: 50%;
 }

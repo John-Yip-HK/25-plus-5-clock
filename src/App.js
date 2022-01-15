@@ -152,7 +152,7 @@ function App() {
   useEffect(() => {
     const body = document.body,
       toggler = document.getElementById("theme-toggler"),
-      darkThemeMq = window.matchMedia("(prefers-color-scheme: dark)");
+      startStopBtn = document.getElementById("start_stop");
 
     function changeContainerElementArrangement() {
       if (
@@ -165,37 +165,33 @@ function App() {
       }
     }
 
-    function checkSystemTheme() {
-      if (darkThemeMq.matches) {
-        // Theme set to dark.
-        toggler.checked = true;
-      } else {
-        // Theme set to light.
-        toggler.checked = false;
-      }
-
-      changeTheme();
-    }
-
     function changeTheme() {
-      if (toggler.checked) body.classList.add("dark");
-      else body.classList.remove("dark");
+      if (toggler.checked) {
+        body.classList.add("dark");
+
+        startStopBtn.classList.remove("btn-outline-dark");
+        startStopBtn.classList.add("btn-outline-light");
+      } else {
+        body.classList.remove("dark");
+
+        startStopBtn.classList.remove("btn-outline-light");
+        startStopBtn.classList.add("btn-outline-dark");
+      }
     }
 
     function onloadEvents() {
+      startStopBtn.classList.remove("btn-primary");
       changeContainerElementArrangement();
-      checkSystemTheme();
+      changeTheme();
     }
 
     window.onload = onloadEvents();
 
     window.addEventListener("resize", changeContainerElementArrangement);
-    darkThemeMq.addEventListener("change", checkSystemTheme);
     toggler.addEventListener("click", changeTheme);
 
     return () => {
       toggler.removeEventListener("click", changeTheme);
-      darkThemeMq.removeEventListener("change", checkSystemTheme);
       window.removeEventListener("resize", changeContainerElementArrangement);
     };
   });
