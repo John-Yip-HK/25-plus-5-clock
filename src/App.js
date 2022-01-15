@@ -173,6 +173,8 @@ function App() {
         // Theme set to light.
         toggler.checked = false;
       }
+
+      changeTheme();
     }
 
     function changeTheme() {
@@ -183,7 +185,6 @@ function App() {
     function onloadEvents() {
       changeContainerElementArrangement();
       checkSystemTheme();
-      changeTheme();
     }
 
     window.onload = onloadEvents();
@@ -191,10 +192,8 @@ function App() {
     window.addEventListener("resize", changeContainerElementArrangement);
     darkThemeMq.addEventListener("change", checkSystemTheme);
     toggler.addEventListener("click", changeTheme);
-    toggler.addEventListener("change", changeTheme);
 
     return () => {
-      toggler.removeEventListener("change", changeTheme);
       toggler.removeEventListener("click", changeTheme);
       darkThemeMq.removeEventListener("change", checkSystemTheme);
       window.removeEventListener("resize", changeContainerElementArrangement);
