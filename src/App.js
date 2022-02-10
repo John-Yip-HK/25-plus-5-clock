@@ -4,6 +4,7 @@ import { Container, Row } from "react-bootstrap";
 import Timer from "./components/TimerComponent";
 import Buttons from "./components/ButtonComponent";
 import Header from "./components/HeaderComponent";
+import Settings from "./components/SettingsComponent";
 
 import useBreakpoint from "bootstrap-5-breakpoint-react-hook";
 
@@ -75,6 +76,8 @@ function App() {
       (button) => button.removeAttribute("disabled")
     );
 
+    document.getElementById("timer").classList.remove("run");
+
     const beepAudio = document.getElementById("beep");
     beepAudio.pause();
     beepAudio.currentTime = 0;
@@ -94,6 +97,8 @@ function App() {
     Array.from(document.querySelectorAll(".adjust-row button")).forEach(
       (button) => button.setAttribute("disabled", "")
     );
+
+    document.getElementById("timer").classList.add("run");
 
     function countDown(mainMin, auxMin, sec, mode) {
       if (mainMin === 0 && sec === 0) {
@@ -140,12 +145,16 @@ function App() {
     Array.from(document.querySelectorAll(".adjust-row button")).forEach(
       (button) => button.removeAttribute("disabled")
     );
+
+    document.getElementById("timer").classList.remove("run");
   };
 
   useEffect(() => {
-    function changeContainerElementArrangement() {
-      const body = document.body;
+    const body = document.body,
+      toggler = document.getElementById("theme-toggler"),
+      startStopBtn = document.getElementById("start_stop");
 
+    function changeContainerElementArrangement() {
       if (
         body.clientWidth > body.clientHeight &&
         ["xs", "sm"].includes(breakpoint)
@@ -156,10 +165,33 @@ function App() {
       }
     }
 
-    window.onload = changeContainerElementArrangement();
+    function changeTheme() {
+      if (toggler.checked) {
+        body.classList.add("dark");
+
+        startStopBtn.classList.remove("btn-outline-dark");
+        startStopBtn.classList.add("btn-outline-light");
+      } else {
+        body.classList.remove("dark");
+
+        startStopBtn.classList.remove("btn-outline-light");
+        startStopBtn.classList.add("btn-outline-dark");
+      }
+    }
+
+    function onloadEvents() {
+      startStopBtn.classList.remove("btn-primary");
+      changeContainerElementArrangement();
+      changeTheme();
+    }
+
+    window.onload = onloadEvents();
+
     window.addEventListener("resize", changeContainerElementArrangement);
+    toggler.addEventListener("click", changeTheme);
 
     return () => {
+      toggler.removeEventListener("click", changeTheme);
       window.removeEventListener("resize", changeContainerElementArrangement);
     };
   });
@@ -167,21 +199,24 @@ function App() {
   return (
     <Container className="d-flex align-items-center flex-column">
       <Row>
-        <Header
-          adjustTime={adjustTime}
-          setChangedFlag={setChangedFlag}
-          session={currTimerState.mainMinutes}
-          isReset={isReset}
-          setIsResetFlag={setIsResetFlag}
-          breakTime={currTimerState.auxiliaryMinutes}
-          mode={currTimerState.mode}
-        />
+        <Header />
       </Row>
       <Row>
         <Timer
           mainMinutes={currTimerState.mainMinutes}
           auxiliaryMinutes={currTimerState.auxiliaryMinutes}
           seconds={currTimerState.seconds}
+          mode={currTimerState.mode}
+        />
+      </Row>
+      <Row id="settings-container">
+        <Settings
+          adjustTime={adjustTime}
+          setChangedFlag={setChangedFlag}
+          session={currTimerState.mainMinutes}
+          isReset={isReset}
+          setIsResetFlag={setIsResetFlag}
+          breakTime={currTimerState.auxiliaryMinutes}
           mode={currTimerState.mode}
         />
       </Row>

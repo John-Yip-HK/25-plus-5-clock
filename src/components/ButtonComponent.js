@@ -34,19 +34,18 @@ export default function ButtonComponent(props) {
 
   useEffect(() => {
     function changeContainerElementArrangement() {
-      const body = document.body,
-        btnContainer = document.getElementById("button-container"),
+      const btnContainer = document.getElementById("button-container"),
         btnContainerParent = btnContainer.parentElement;
 
       const btnPortraitClasses = ["flex-column", "align-items-center"],
         btnLandscapeClasses = ["flex-row", "justify-content-evenly"];
 
-      let width = 50;
+      let width = 70;
 
-      if (body.clientWidth > body.clientHeight) {
+      if (window.innerWidth > window.innerHeight) {
         btnContainer.classList.remove(...btnPortraitClasses);
         btnContainer.classList.add(...btnLandscapeClasses);
-        btnContainerParent.style.setProperty("width", `${width}%`);
+        btnContainerParent.style.setProperty("width", `${width}vw`);
       } else {
         btnContainerParent.style.removeProperty("width");
         btnContainer.classList.remove(...btnLandscapeClasses);
@@ -66,7 +65,7 @@ export default function ButtonComponent(props) {
     <Col id="button-container" className="d-flex">
       <Row>
         <Col>
-          <Button id="start_stop" onClick={handleTimer}>
+          <Button id="start_stop" variant="outline-dark" onClick={handleTimer}>
             <FontAwesomeIcon icon={startStopIcon} />{" "}
             <span id="start_stop_caption">Start</span>
           </Button>
@@ -74,7 +73,7 @@ export default function ButtonComponent(props) {
       </Row>
       <Row>
         <Col>
-          <Button id="reset" variant="danger" onClick={handleReset}>
+          <Button id="reset" variant="outline-danger" onClick={handleReset}>
             <FontAwesomeIcon icon={faRedoAlt} /> Reset
           </Button>
         </Col>
