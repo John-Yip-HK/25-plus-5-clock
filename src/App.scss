@@ -10,7 +10,7 @@
 }
 
 @mixin transition() {
-  transition-property: all;
+  transition-property: background-color, border-color, color;
   transition-duration: 0.3s;
 }
 
@@ -20,42 +20,32 @@
     color: $gray-100;
 
     #timer {
-      border-color: $black;
+      border-color: $gray-800;
 
       #time-left {
         font-weight: 600;
       }
     }
 
-    #settings-container {
-      .btn {
-        color: $gray-200;
-      }
-
-      .time-window-value {
-        font-weight: 500;
-      }
+    #settings-container .btn,
+    #button-container .btn {
+      color: $gray-200;
     }
   } @else {
-    background-color: $gray-100;
+    background-color: $gray-200;
     color: $gray-900;
 
     #timer {
-      border-color: $black;
+      border-color: $gray-300;
 
       #time-left {
         font-weight: 700;
       }
     }
 
-    #settings-container {
-      .btn {
-        color: $black;
-      }
-
-      .time-window-value {
-        font-weight: 600;
-      }
+    #settings-container .btn,
+    #button-container .btn {
+      color: $black;
     }
   }
 
@@ -98,10 +88,7 @@ body.dark {
   transition-timing-function: ease-out;
 
   #time-left {
-    @include transition();
-
     font-size: 400%;
-    font-weight: 700;
   }
 }
 
@@ -134,6 +121,7 @@ body.dark {
 
         .time-window-value {
           font-size: 2em;
+          font-weight: 600;
         }
       }
 
@@ -144,8 +132,7 @@ body.dark {
       }
 
       .btn:hover,
-      .btn:focus,
-      .btn:active {
+      .btn:focus {
         color: $orange;
       }
     }
@@ -155,6 +142,26 @@ body.dark {
 #button-container {
   button {
     margin: 0.3em 0;
+
+    border: none;
+    box-shadow: none;
+
+    font-size: 1.5em;
+
+    &:hover,
+    &:focus {
+      background-color: transparent;
+    }
+
+    &#start_stop:hover,
+    &#start_stop:focus {
+      color: $orange;
+    }
+
+    &#reset:hover,
+    &#reset:focus {
+      color: $red;
+    }
 
     * {
       pointer-events: none;
