@@ -10,67 +10,52 @@ import useBreakpoint from "bootstrap-5-breakpoint-react-hook";
 
 import "bootstrap/dist/css/bootstrap.min.css";
 import "./App.scss";
+import { TimerState, defaults } from "./context/Context";
 
 function App() {
   const breakpoint = useBreakpoint();
 
-  const defaults = {
-    mainMinutes: 25,
-    auxiliaryMinutes: 5,
-    seconds: 0,
-    mode: "S",
-    initMinutes: [null, null],
-  };
+  const {
+    state,
+    dispatch,
+    runningState: { changedDuringPause },
+    runningDispatch,
+  } = TimerState();
 
-  for (let defaultKey in defaults) {
-    Object.defineProperty(defaults, defaultKey, {
-      writeable: false,
-      eumerable: true,
-      configurable: false,
-    });
-  }
-
-  const [currTimerState, setCurrTimerState] = useState({
-    mainMinutes: defaults.mainMinutes,
-    auxiliaryMinutes: defaults.auxiliaryMinutes,
-    seconds: defaults.seconds,
-    mode: defaults.mode,
-  });
-
-  const [timer, setTimer] = useState(null);
-  const [initMinutes, setInitMinutes] = useState(defaults.initMinutes);
-  const [changedDuringPause, setChangedFlag] = useState(false);
-
-  const [isReset, setIsResetFlag] = useState(false);
+  const [beepAudio, setBeepAudio] = useState(null);
 
   const adjustTime = (
-    mainMinutes = currTimerState.mainMinutes,
-    auxiliaryMinutes = currTimerState.auxiliaryMinutes,
-    seconds = currTimerState.seconds,
-    mode = currTimerState.mode
+    mainMinutes = state.mainMinutes,
+    auxiliaryMinutes = state.auxiliaryMinutes,
+    seconds = state.seconds,
+    mode = state.mode
   ) => {
-    setCurrTimerState({
-      mainMinutes: mainMinutes,
-      auxiliaryMinutes: auxiliaryMinutes,
-      seconds: seconds,
-      mode: mode,
+    dispatch({
+      type: "SET_TIMER_TIME",
+      payload: {
+        mainMinutes,
+        auxiliaryMinutes,
+        seconds,
+        mode,
+      },
     });
   };
 
   const resetTime = () => {
-    clearTimeout(timer);
-    setTimer(null);
+    clearTimeout(state.timer);
 
-    adjustTime(
-      defaults.mainMinutes,
-      defaults.auxiliaryMinutes,
-      defaults.seconds,
-      defaults.mode
-    );
-    setInitMinutes(defaults.initMinutes);
+    dispatch({
+      type: "RESET",
+    });
 
-    setChangedFlag(false);
-    setIsResetFlag(true);
+    runningDispatch({
+      type: "SET_CHANGED_FLAG",
+      payload: false,
+    });
+    runningDispatch({
+      type: "SET_RESET_FLAG",
+      payload: true,
+    });
 
     Array.from(document.querySelectorAll(".adjust-row button")).forEach(
       (button) => button.removeAttribute("disabled")
@@ -78,21 +63,24 @@ function App() {
 
     document.getElementById("timer").classList.remove("run");
 
-    const beepAudio = document.getElementById("beep");
     beepAudio.pause();
     beepAudio.currentTime = 0;
   };
 
   const runTimer = () => {
-    let changedFlag = changedDuringPause;
-
-    if (initMinutes[0] === null || initMinutes[1] === null || changedFlag) {
-      initMinutes[0] = currTimerState.mainMinutes;
-      initMinutes[1] = currTimerState.auxiliaryMinutes;
-      changedFlag = false;
+    if (
+      state.initMinutes.some((minute) => minute === null) ||
+      changedDuringPause
+    ) {
+      dispatch({
+        type: "SET_INIT_MINUTE",
+        payload: [state.mainMinutes, state.auxiliaryMinutes],
+      });
+      runningDispatch({
+        type: "SET_CHANGED_FLAG",
+        payload: false,
+      });
     }
-
-    setChangedFlag(changedFlag);
 
     Array.from(document.querySelectorAll(".adjust-row button")).forEach(
       (button) => button.setAttribute("disabled", "")
@@ -105,16 +93,14 @@ function App() {
         mode = mode === "S" ? "B" : "S";
 
         if (mode === "B") {
-          mainMin = initMinutes[1];
-          auxMin = initMinutes[0];
+          mainMin = state.initMinutes[1];
+          auxMin = state.initMinutes[0];
         } else {
-          mainMin = initMinutes[0];
-          auxMin = initMinutes[1];
+          mainMin = state.initMinutes[0];
+          auxMin = state.initMinutes[1];
         }
 
-        const beepAudio = document.getElementById("beep");
         beepAudio.currentTime = 0;
-        beepAudio.volume = 0.5;
         beepAudio.play();
       } else if (sec === 0) {
         --mainMin;
@@ -123,31 +109,38 @@ function App() {
         --sec;
       }
 
-      setTimer(
-        setTimeout(() => {
+      dispatch({
+        type: "SET_TIMER",
+        payload: setTimeout(() => {
           adjustTime(mainMin, auxMin, sec, mode);
           countDown(mainMin, auxMin, sec, mode);
-        }, 1000)
-      );
+        }, 1000),
+      });
     }
 
     countDown(
-      currTimerState.mainMinutes,
-      currTimerState.auxiliaryMinutes,
-      currTimerState.seconds,
-      currTimerState.mode
+      state.mainMinutes,
+      state.auxiliaryMinutes,
+      state.seconds,
+      state.mode
     );
   };
 
   const pauseTimer = () => {
-    clearTimeout(timer);
-    setTimer(null);
+    clearTimeout(state.timer);
+    dispatch({
+      type: "SET_TIMER",
+      payload: defaults.timer,
+    });
 
     Array.from(document.querySelectorAll(".adjust-row button")).forEach(
       (button) => button.removeAttribute("disabled")
     );
 
     document.getElementById("timer").classList.remove("run");
+
+    beepAudio.pause();
+    beepAudio.currentTime = 0;
   };
 
   useEffect(() => {
@@ -184,6 +177,8 @@ function App() {
       startStopBtn.classList.remove("btn-primary");
       changeContainerElementArrangement();
       changeTheme();
+
+      setBeepAudio(document.getElementById("beep"));
     }
 
     window.onload = onloadEvents();
@@ -203,23 +198,10 @@ function App() {
         <Header />
       </Row>
       <Row>
-        <Timer
-          mainMinutes={currTimerState.mainMinutes}
-          auxiliaryMinutes={currTimerState.auxiliaryMinutes}
-          seconds={currTimerState.seconds}
-          mode={currTimerState.mode}
-        />
+        <Timer />
       </Row>
       <Row id="settings-container">
-        <Settings
-          adjustTime={adjustTime}
-          setChangedFlag={setChangedFlag}
-          session={currTimerState.mainMinutes}
-          isReset={isReset}
-          setIsResetFlag={setIsResetFlag}
-          breakTime={currTimerState.auxiliaryMinutes}
-          mode={currTimerState.mode}
-        />
+        <Settings adjustTime={adjustTime} />
       </Row>
       <Row>
         <Buttons

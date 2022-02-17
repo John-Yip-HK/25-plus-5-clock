@@ -7,6 +7,8 @@ import Col from "react-bootstrap/Col";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowUp, faArrowDown } from "@fortawesome/free-solid-svg-icons";
 
+import { TimerState } from "../context/Context";
+
 const minutes = {
     session: null,
     breakTime: null,
@@ -14,18 +16,26 @@ const minutes = {
   _ = undefined;
 
 export default function Settings(props) {
+  const {
+    state: { mainMinutes, auxiliaryMinutes, mode },
+    runningState: { isReset },
+    runningDispatch,
+  } = TimerState();
+
   <i class="far fa-arrow-alt-circle-up"></i>;
   const arrowUp = <FontAwesomeIcon icon={faArrowUp} size="2x" />;
   const arrowDown = <FontAwesomeIcon icon={faArrowDown} size="2x" />;
-  let isResetFlag = props.isReset;
 
-  if (minutes.session === null || isResetFlag) {
-    minutes.session = props.session;
-    minutes.breakTime = props.breakTime;
-    isResetFlag = false;
+  if (minutes.session === null || isReset) {
+    minutes.session = mainMinutes;
+    minutes.breakTime = auxiliaryMinutes;
+    setTimeout(() => {
+      runningDispatch({
+        type: "SET_RESET_FLAG",
+        payload: false,
+      });
+    }, 0);
   }
-
-  setTimeout(() => props.setIsResetFlag(isResetFlag), 0);
 
   const TimeWindow = (details) => {
     let tempTime = details.time;
@@ -44,7 +54,7 @@ export default function Settings(props) {
         newAuxMin,
         newSeconds = 0;
 
-      if (props.mode === "S") {
+      if (mode === "S") {
         newMainMin = minutes.session;
         newAuxMin = minutes.breakTime;
 
@@ -67,7 +77,10 @@ export default function Settings(props) {
       }
 
       props.adjustTime(newMainMin, newAuxMin, newSeconds);
-      props.setChangedFlag(true);
+      runningDispatch({
+        type: "SET_CHANGED_FLAG",
+        payload: true,
+      });
     };
 
     return (

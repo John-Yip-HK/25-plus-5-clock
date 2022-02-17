@@ -1,14 +1,17 @@
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
+import { TimerState } from "../context/Context";
 
-export default function TimerComponent(props) {
+export default function TimerComponent() {
+  const {
+    state: { mainMinutes, auxiliaryMinutes, seconds, mode },
+  } = TimerState();
+
   const twoPlaceTime = (time) => (time < 10 ? "0" : "") + time;
 
-  const timerLabel = props.mode === "S" ? "Session" : "Break";
-  const auxTimerLabel = props.mode === "S" ? "Break" : "Session";
-  let timeLeft = `${twoPlaceTime(props.mainMinutes)}:${twoPlaceTime(
-    props.seconds
-  )}`;
+  const timerLabel = mode === "S" ? "Session" : "Break";
+  const auxTimerLabel = mode === "S" ? "Break" : "Session";
+  let timeLeft = `${twoPlaceTime(mainMinutes)}:${twoPlaceTime(seconds)}`;
 
   return (
     <Col id="timer" className="d-flex flex-column justify-content-center">
@@ -23,7 +26,7 @@ export default function TimerComponent(props) {
       <Row>
         <Col id="auxiliary-time">
           <span id="auxiliary-time-label">{auxTimerLabel}</span>:&nbsp;
-          <span id="auxiliary-time-span">{props.auxiliaryMinutes}:00</span>
+          <span id="auxiliary-time-span">{auxiliaryMinutes}:00</span>
         </Col>
       </Row>
     </Col>
