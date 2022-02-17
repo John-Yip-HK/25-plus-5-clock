@@ -114,6 +114,7 @@ function App() {
 
         const beepAudio = document.getElementById("beep");
         beepAudio.currentTime = 0;
+        beepAudio.volume = 0.5;
         beepAudio.play();
       } else if (sec === 0) {
         --mainMin;
