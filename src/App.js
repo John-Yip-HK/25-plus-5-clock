@@ -72,16 +72,15 @@ function App() {
       state.initMinutes.some((minute) => minute === null) ||
       changedDuringPause
     ) {
-      dispatch({
-        type: "SET_INIT_MINUTE",
-        payload: [state.mainMinutes, state.auxiliaryMinutes],
-      });
+      state.initMinutes[0] = state.mainMinutes;
+      state.initMinutes[1] = state.auxiliaryMinutes;
       runningDispatch({
         type: "SET_CHANGED_FLAG",
         payload: false,
       });
     }
 
+    beepAudio.volume = 0.5;
     Array.from(document.querySelectorAll(".adjust-row button")).forEach(
       (button) => button.setAttribute("disabled", "")
     );

@@ -4,8 +4,6 @@ export const TimerReducer = (state, action) => {
   switch (action.type) {
     case "SET_TIMER":
       return { ...state, timer: action.payload };
-    case "SET_INIT_MINUTE":
-      return { ...state, initMinutes: action.payload };
     case "SET_TIMER_TIME":
       return { ...state, ...action.payload };
     case "RESET":

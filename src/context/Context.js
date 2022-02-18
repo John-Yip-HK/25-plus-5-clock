@@ -1,5 +1,5 @@
 import { createContext, useContext, useReducer } from "react";
-import { TimerReducer, TimerRunningReducer } from "./Reducers";
+import { TimerReducer, TimerRunningReducer, SettingReducer } from "./Reducers";
 
 const Timer = createContext();
 
@@ -31,7 +31,14 @@ const Context = ({ children }) => {
   });
 
   return (
-    <Timer.Provider value={{ state, dispatch, runningState, runningDispatch }}>
+    <Timer.Provider
+      value={{
+        state,
+        dispatch,
+        runningState,
+        runningDispatch,
+      }}
+    >
       {children}
     </Timer.Provider>
   );
