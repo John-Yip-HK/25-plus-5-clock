@@ -64,19 +64,15 @@ export default function ButtonComponent(props) {
   return (
     <Col id="button-container" className="d-flex">
       <Row>
-        <Col>
-          <Button id="start_stop" variant="outline-dark" onClick={handleTimer}>
-            <FontAwesomeIcon icon={startStopIcon} />{" "}
-            <span id="start_stop_caption">Start</span>
-          </Button>
-        </Col>
+        <Button id="start_stop" variant="outline-dark" onClick={handleTimer}>
+          <FontAwesomeIcon icon={startStopIcon} />{" "}
+          <span id="start_stop_caption">Start</span>
+        </Button>
       </Row>
       <Row>
-        <Col>
-          <Button id="reset" variant="outline-danger" onClick={handleReset}>
-            <FontAwesomeIcon icon={faRedoAlt} /> Reset
-          </Button>
-        </Col>
+        <Button id="reset" variant="outline-danger" onClick={handleReset}>
+          <FontAwesomeIcon icon={faRedoAlt} /> Reset
+        </Button>
       </Row>
     </Col>
   );
