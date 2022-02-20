@@ -142,7 +142,7 @@ body.dark {
 
 #button-container {
   .row {
-    width: 10rem;
+    width: 30vmax;
   }
 
   button {
@@ -154,7 +154,8 @@ body.dark {
     font-size: 1.5em;
 
     &:hover,
-    &:focus {
+    &:focus,
+    &:active {
       background-color: transparent;
     }
 
@@ -205,6 +206,10 @@ body.dark {
 
   .time-window-value-col {
     width: 15vmin;
+  }
+
+  #button-container .row {
+    width: 20vmax;
   }
 
   @media only screen and (min-aspect-ratio: 2) and (orientation: landscape) and (hover: none) {

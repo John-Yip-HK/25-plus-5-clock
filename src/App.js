@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 
 import { Container, Row } from "react-bootstrap";
 import Timer from "./components/TimerComponent";
@@ -22,7 +22,7 @@ function App() {
     runningDispatch,
   } = TimerState();
 
-  const [beepAudio, setBeepAudio] = useState(null);
+  const beepAudio = useRef();
 
   const adjustTime = (
     mainMinutes = state.mainMinutes,
@@ -39,6 +39,11 @@ function App() {
         mode,
       },
     });
+  };
+
+  const resetAudio = () => {
+    beepAudio.current.pause();
+    beepAudio.current.currentTime = 0;
   };
 
   const resetTime = () => {
@@ -62,9 +67,7 @@ function App() {
     );
 
     document.getElementById("timer").classList.remove("run");
-
-    beepAudio.pause();
-    beepAudio.currentTime = 0;
+    resetAudio();
   };
 
   const runTimer = () => {
@@ -80,7 +83,7 @@ function App() {
       });
     }
 
-    beepAudio.volume = 0.5;
+    beepAudio.current.volume = 0.5;
     Array.from(document.querySelectorAll(".adjust-row button")).forEach(
       (button) => button.setAttribute("disabled", "")
     );
@@ -137,17 +140,13 @@ function App() {
     );
 
     document.getElementById("timer").classList.remove("run");
-
-    beepAudio.pause();
-    beepAudio.currentTime = 0;
+    resetAudio();
   };
 
   useEffect(() => {
-    const body = document.body,
-      toggler = document.getElementById("theme-toggler"),
-      startStopBtn = document.getElementById("start_stop");
-
     function changeContainerElementArrangement() {
+      const body = document.body;
+
       if (
         body.clientWidth > body.clientHeight &&
         ["xs", "sm"].includes(breakpoint)
@@ -158,38 +157,12 @@ function App() {
       }
     }
 
-    function changeTheme() {
-      if (toggler.checked) {
-        body.classList.add("dark");
-
-        startStopBtn.classList.remove("btn-outline-dark");
-        startStopBtn.classList.add("btn-outline-light");
-      } else {
-        body.classList.remove("dark");
-
-        startStopBtn.classList.remove("btn-outline-light");
-        startStopBtn.classList.add("btn-outline-dark");
-      }
-    }
-
-    function onloadEvents() {
-      startStopBtn.classList.remove("btn-primary");
-      changeContainerElementArrangement();
-      changeTheme();
-
-      setBeepAudio(document.getElementById("beep"));
-    }
-
-    window.onload = onloadEvents();
-
     window.addEventListener("resize", changeContainerElementArrangement);
-    toggler.addEventListener("click", changeTheme);
 
     return () => {
-      toggler.removeEventListener("click", changeTheme);
       window.removeEventListener("resize", changeContainerElementArrangement);
     };
-  });
+  }, [document.body.clientWidth]);
 
   return (
     <Container className="d-flex align-items-center flex-column">
@@ -213,6 +186,7 @@ function App() {
         <audio
           src="https://raw.githubusercontent.com/freeCodeCamp/cdn/master/build/testable-projects-fcc/audio/BeepSound.wav"
           id="beep"
+          ref={beepAudio}
         ></audio>
       </Row>
     </Container>
