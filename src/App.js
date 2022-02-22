@@ -102,8 +102,8 @@ function App() {
           auxMin = state.initMinutes[1];
         }
 
-        beepAudio.currentTime = 0;
-        beepAudio.play();
+        beepAudio.current.currentTime = 0;
+        beepAudio.current.play();
       } else if (sec === 0) {
         --mainMin;
         sec = 59;
