@@ -2,7 +2,7 @@ import { useRef } from "react";
 import { useEffect } from "react";
 import Col from "react-bootstrap/Col";
 import Row from "react-bootstrap/Row";
-import Form from "react-bootstrap/Form";
+// import Form from "react-bootstrap/Form";
 import "./toggle-button.scss";
 
 export default function Header() {
@@ -40,7 +40,7 @@ export default function Header() {
     <Col id="header-container">
       <Row>
         <Col>
-          {/* <label className="switch">
+          <label className="switch">
             <input
               type="checkbox"
               id="theme-toggler"
@@ -48,19 +48,18 @@ export default function Header() {
               ref={toggler}
             />
             <span className="slider round"></span>
-          </label> 
-          label="🌞/🌛"
-          */}
-          <Form>
+          </label>
+
+          {/* <Form>
             <Form.Check
               type="switch"
               id="theme-toggler"
               className="switch"
               onClick={changeTheme}
               ref={toggler}
-              label="Theme changer"
+              label="🌞/🌛"
             />
-          </Form>
+          </Form> */}
         </Col>
       </Row>
     </Col>
