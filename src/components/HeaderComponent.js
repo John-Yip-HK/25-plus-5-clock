@@ -2,7 +2,8 @@ import { useRef } from "react";
 import { useEffect } from "react";
 import Col from "react-bootstrap/Col";
 import Row from "react-bootstrap/Row";
-import "../toggle-button.scss";
+import Form from "react-bootstrap/Form";
+import "./toggle-button.scss";
 
 export default function Header() {
   const watchDarkTheme = window.matchMedia("(prefers-color-scheme: dark)");
@@ -19,7 +20,7 @@ export default function Header() {
   };
 
   useEffect(() => {
-    const changeTheme = () => {
+    const toggleChangeTheme = () => {
       const { current } = toggler;
 
       if (watchDarkTheme.matches) {
@@ -28,17 +29,18 @@ export default function Header() {
         if (current.checked) current.click();
       }
     };
-    window.onload = changeTheme();
-    watchDarkTheme.addEventListener("change", changeTheme);
+    window.onload = toggleChangeTheme();
+    watchDarkTheme.addEventListener("change", toggleChangeTheme);
 
-    return () => watchDarkTheme.removeEventListener("change", changeTheme);
+    return () =>
+      watchDarkTheme.removeEventListener("change", toggleChangeTheme);
   }, []);
 
   return (
     <Col id="header-container">
       <Row>
         <Col>
-          <label className="switch">
+          {/* <label className="switch">
             <input
               type="checkbox"
               id="theme-toggler"
@@ -46,7 +48,19 @@ export default function Header() {
               ref={toggler}
             />
             <span className="slider round"></span>
-          </label>
+          </label> 
+          label="🌞/🌛"
+          */}
+          <Form>
+            <Form.Check
+              type="switch"
+              id="theme-toggler"
+              className="switch"
+              onClick={changeTheme}
+              ref={toggler}
+              label="Theme changer"
+            />
+          </Form>
         </Col>
       </Row>
     </Col>

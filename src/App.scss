@@ -88,7 +88,8 @@ body.dark {
 
   #time-left {
     font-size: 350%;
-    font-weight: 700;
+    font-weight: 600;
+    letter-spacing: -2px;
   }
 }
 
@@ -147,6 +148,7 @@ body.dark {
 
   button {
     margin: 0.3em 0;
+    padding: 0;
 
     border: none;
     box-shadow: none;
