@@ -14,21 +14,23 @@ export default function TimerComponent() {
   let timeLeft = `${twoPlaceTime(mainMinutes)}:${twoPlaceTime(seconds)}`;
 
   return (
-    <Col id="timer" className="d-flex flex-column justify-content-center">
-      <Row>
-        <Col id="timer-label">{timerLabel}</Col>
-      </Row>
-      <Row>
-        <Col>
-          <h1 id="time-left">{timeLeft}</h1>
-        </Col>
-      </Row>
-      <Row>
-        <Col id="auxiliary-time">
-          <span id="auxiliary-time-label">{auxTimerLabel}</span>:&nbsp;
-          <span id="auxiliary-time-span">{auxiliaryMinutes}:00</span>
-        </Col>
-      </Row>
-    </Col>
+    <Row>
+      <Col id="timer" className="d-flex flex-column justify-content-center">
+        <Row>
+          <Col id="timer-label">{timerLabel}</Col>
+        </Row>
+        <Row>
+          <Col>
+            <h1 id="time-left">{timeLeft}</h1>
+          </Col>
+        </Row>
+        <Row>
+          <Col id="auxiliary-time">
+            <span id="auxiliary-time-label">{auxTimerLabel}</span>:&nbsp;
+            <span id="auxiliary-time-span">{auxiliaryMinutes}:00</span>
+          </Col>
+        </Row>
+      </Col>
+    </Row>
   );
 }

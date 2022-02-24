@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useRef } from "react";
 
 import Button from "react-bootstrap/Button";
 import Row from "react-bootstrap/Row";
@@ -21,8 +21,8 @@ export default function Settings(props) {
     runningState: { isReset },
     runningDispatch,
   } = TimerState();
+  const settingContainer = useRef();
 
-  <i class="far fa-arrow-alt-circle-up"></i>;
   const arrowUp = <FontAwesomeIcon icon={faArrowUp} size="2x" />;
   const arrowDown = <FontAwesomeIcon icon={faArrowDown} size="2x" />;
 
@@ -127,7 +127,7 @@ export default function Settings(props) {
 
   useEffect(() => {
     function changeContainerElementArrangement() {
-      const container = document.getElementById("settings-container");
+      const { current: container } = settingContainer;
 
       const containerPortraitClasses = ["flex-column", "align-items-center"],
         containerLandscapeClasses = ["justify-content-evenly"];
@@ -153,10 +153,10 @@ export default function Settings(props) {
     return () => {
       window.removeEventListener("resize", changeContainerElementArrangement);
     };
-  });
+  }, []);
 
   return (
-    <>
+    <Row id="settings-container" ref={settingContainer}>
       <Row>
         {TimeWindow(
           new TimerWindowParams("Session Length", "session", minutes.session)
@@ -167,6 +167,6 @@ export default function Settings(props) {
           new TimerWindowParams("Break Length", "break", minutes.breakTime)
         )}
       </Row>
-    </>
+    </Row>
   );
 }

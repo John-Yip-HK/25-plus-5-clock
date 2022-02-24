@@ -1,6 +1,6 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useEffect, useRef } from "react";
 
-import { Container, Row } from "react-bootstrap";
+import { Container } from "react-bootstrap";
 import Timer from "./components/TimerComponent";
 import Buttons from "./components/ButtonComponent";
 import Header from "./components/HeaderComponent";
@@ -166,29 +166,20 @@ function App() {
 
   return (
     <Container className="d-flex align-items-center flex-column">
-      <Row>
-        <Header />
-      </Row>
-      <Row>
-        <Timer />
-      </Row>
-      <Row id="settings-container">
-        <Settings adjustTime={adjustTime} />
-      </Row>
-      <Row>
-        <Buttons
-          resetTime={resetTime}
-          runTimer={runTimer}
-          pauseTimer={pauseTimer}
-        />
-      </Row>
-      <Row className="display-none">
-        <audio
-          src="https://raw.githubusercontent.com/freeCodeCamp/cdn/master/build/testable-projects-fcc/audio/BeepSound.wav"
-          id="beep"
-          ref={beepAudio}
-        ></audio>
-      </Row>
+      <Header />
+      <Timer />
+      <Settings adjustTime={adjustTime} />
+      <Buttons
+        resetTime={resetTime}
+        runTimer={runTimer}
+        pauseTimer={pauseTimer}
+      />
+      <audio
+        className="d-none"
+        src="https://raw.githubusercontent.com/freeCodeCamp/cdn/master/build/testable-projects-fcc/audio/BeepSound.wav"
+        id="beep"
+        ref={beepAudio}
+      ></audio>
     </Container>
   );
 }

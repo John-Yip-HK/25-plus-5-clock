@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 
 import Col from "react-bootstrap/Col";
 import Row from "react-bootstrap/Row";
@@ -9,6 +9,8 @@ import { faPlay, faPause, faRedoAlt } from "@fortawesome/free-solid-svg-icons";
 
 export default function ButtonComponent(props) {
   const [startStopIcon, setStartStopIcon] = useState(faPlay);
+  const btnContainer = useRef();
+  const startStopCaption = useRef();
 
   const handleTimer = (event) => {
     const elementWithCaption = event.target.children[1];
@@ -25,7 +27,7 @@ export default function ButtonComponent(props) {
   };
 
   const handleReset = () => {
-    const elementWithCaption = document.getElementById("start_stop_caption");
+    const { current: elementWithCaption } = startStopCaption;
 
     props.resetTime();
     setStartStopIcon(faPlay);
@@ -34,8 +36,8 @@ export default function ButtonComponent(props) {
 
   useEffect(() => {
     function changeContainerElementArrangement() {
-      const btnContainer = document.getElementById("button-container"),
-        btnContainerParent = btnContainer.parentElement;
+      const { current: btnCol } = btnContainer,
+        btnColParent = btnCol.parentElement;
 
       const btnPortraitClasses = ["flex-column", "align-items-center"],
         btnLandscapeClasses = ["flex-row", "justify-content-evenly"];
@@ -43,13 +45,13 @@ export default function ButtonComponent(props) {
       let width = 70;
 
       if (window.innerWidth > window.innerHeight) {
-        btnContainer.classList.remove(...btnPortraitClasses);
-        btnContainer.classList.add(...btnLandscapeClasses);
-        btnContainerParent.style.setProperty("width", `${width}vw`);
+        btnCol.classList.remove(...btnPortraitClasses);
+        btnCol.classList.add(...btnLandscapeClasses);
+        btnColParent.style.setProperty("width", `${width}vw`);
       } else {
-        btnContainerParent.style.removeProperty("width");
-        btnContainer.classList.remove(...btnLandscapeClasses);
-        btnContainer.classList.add(...btnPortraitClasses);
+        btnColParent.style.removeProperty("width");
+        btnCol.classList.remove(...btnLandscapeClasses);
+        btnCol.classList.add(...btnPortraitClasses);
       }
     }
 
@@ -59,21 +61,25 @@ export default function ButtonComponent(props) {
     return () => {
       window.removeEventListener("resize", changeContainerElementArrangement);
     };
-  });
+  }, []);
 
   return (
-    <Col id="button-container" className="d-flex">
-      <Row>
-        <Button id="start_stop" variant="outline-dark" onClick={handleTimer}>
-          <FontAwesomeIcon icon={startStopIcon} />{" "}
-          <span id="start_stop_caption">Start</span>
-        </Button>
-      </Row>
-      <Row>
-        <Button id="reset" variant="outline-danger" onClick={handleReset}>
-          <FontAwesomeIcon icon={faRedoAlt} /> Reset
-        </Button>
-      </Row>
-    </Col>
+    <Row>
+      <Col id="button-container" className="d-flex" ref={btnContainer}>
+        <Row>
+          <Button id="start_stop" variant="outline-dark" onClick={handleTimer}>
+            <FontAwesomeIcon icon={startStopIcon} />{" "}
+            <span id="start_stop_caption" ref={startStopCaption}>
+              Start
+            </span>
+          </Button>
+        </Row>
+        <Row>
+          <Button id="reset" variant="outline-danger" onClick={handleReset}>
+            <FontAwesomeIcon icon={faRedoAlt} /> Reset
+          </Button>
+        </Row>
+      </Col>
+    </Row>
   );
 }
