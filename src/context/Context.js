@@ -1,4 +1,4 @@
-import { createContext, useContext, useReducer } from "react";
+import { createContext, useContext, useReducer, useState } from "react";
 import { TimerReducer, TimerRunningReducer } from "./Reducers";
 
 const Timer = createContext();
@@ -24,6 +24,7 @@ const Context = ({ children }) => {
   const [state, dispatch] = useReducer(TimerReducer, {
     ...defaults,
   });
+  const [started, setStarted] = useState(false);
 
   const [runningState, runningDispatch] = useReducer(TimerRunningReducer, {
     changedDuringPause: false,
@@ -37,6 +38,8 @@ const Context = ({ children }) => {
         dispatch,
         runningState,
         runningDispatch,
+        started,
+        setStarted,
       }}
     >
       {children}

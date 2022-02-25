@@ -7,15 +7,29 @@ import Button from "react-bootstrap/Button";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPlay, faPause, faRedoAlt } from "@fortawesome/free-solid-svg-icons";
 
+import { TimerState } from "../context/Context";
+
 export default function ButtonComponent(props) {
   const [startStopIcon, setStartStopIcon] = useState(faPlay);
   const btnContainer = useRef();
   const startStopCaption = useRef();
+  const { started, setStarted } = TimerState();
 
   const handleTimer = (event) => {
     const elementWithCaption = event.target.children[1];
 
     if (elementWithCaption.innerHTML === "Start") {
+      if (!started) {
+        const audio = document.getElementById("beep");
+        audio.play().then(() => {
+          props.resetAudio();
+          audio.muted = false;
+          audio.volume = 0.5;
+        });
+
+        setStarted(true);
+      }
+
       props.runTimer();
       elementWithCaption.innerHTML = "Pause";
       setStartStopIcon(faPause);

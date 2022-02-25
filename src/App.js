@@ -173,9 +173,11 @@ function App() {
         resetTime={resetTime}
         runTimer={runTimer}
         pauseTimer={pauseTimer}
+        resetAudio={resetAudio}
       />
       <audio
         className="d-none"
+        muted
         src="https://raw.githubusercontent.com/freeCodeCamp/cdn/master/build/testable-projects-fcc/audio/BeepSound.wav"
         id="beep"
         ref={beepAudio}
